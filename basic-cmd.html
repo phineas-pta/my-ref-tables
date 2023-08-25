@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>very basic shell commands</title>
+	<meta name="author" content="PTA" />
+	<style>
+		table {border-collapse: collapse;}
+		th {font-size: 2vh; padding: 5px;}
+		td {font-family: monospace; padding: 5px;}
+		td.table-na {background: #ececec; color: #2C2C2C;}
+	</style>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+</head>
+<body>
+	<h1>equivalence bash - command prompt - powershell</h1>
+	<p>Reference: <a target="_blank" rel="noreferrer" href="https://ss64.com/">SS64</a></p>
+	<p>windows commands are always case insensitive</p>
+	<table border="1" frame="box">
+		<thead><tr>
+			<th>bash</th>
+			<th>cmd</th>
+			<th>pwsh</th>
+		</tr></thead>
+		<tbody>
+			<tr>
+				<td>pwd</td>
+				<td>CD</td>
+				<td>Get-Location</td>
+			</tr>
+			<tr>
+				<td>cd</td>
+				<td>CD</td>
+				<td>Set-Location</td>
+			</tr>
+			<tr>
+				<td>ls</td>
+				<td>DIR</td>
+				<td>Get-ChildItem</td>
+			</tr>
+			<tr>
+				<td>echo</td>
+				<td>ECHO</td>
+				<td>Write-Output</td>
+			</tr>
+			<tr>
+				<td>$PATH</td>
+				<td>%PATH%</td>
+				<td>$env:PATH</td>
+			</tr>
+			<tr>
+				<td>cat</td>
+				<td>TYPE</td>
+				<td>Get-Content</td>
+			</tr>
+			<tr>
+				<td>export</td>
+				<td>SET</td>
+				<td>Set-Variable</td>
+			</tr>
+			<tr>
+				<td>grep</td>
+				<td>FINDSTR</td>
+				<td>Select-String</td>
+			</tr>
+			<tr>
+				<td>which</td>
+				<td>WHERE</td>
+				<td class="table-na"></td>
+			</tr>
+			<tr>
+				<td>alias</td>
+				<td class="table-na"></td>
+				<td>Set-Alias</td>
+			</tr>
+			<tr>
+				<td>date</td>
+				<td class="table-na"></td>
+				<td>Get-Date</td>
+			</tr>
+			<tr>
+				<td>tee</td>
+				<td class="table-na"></td>
+				<td>Tee-Object</td>
+			</tr>
+			<tr>
+				<td>ping</td>
+				<td>PING</td>
+				<td>Test-Connection</td>
+			</tr>
+			<tr>
+				<td>cp</td>
+				<td>COPY</td>
+				<td>Copy-Item</td>
+			</tr>
+			<tr>
+				<td>mv</td>
+				<td>MOVE</td>
+				<td>Move-Item</td>
+			</tr>
+			<tr>
+				<td>rm</td>
+				<td>DEL</td>
+				<td>Remove-Item</td>
+			</tr>
+			<tr>
+				<td>clear</td>
+				<td>CLS</td>
+				<td>Clear-Host</td>
+			</tr>
+		</tbody>
+	</table>
+</body>
+</html>
