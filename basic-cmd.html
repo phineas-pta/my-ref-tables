@@ -15,6 +15,11 @@
 <body>
 	<h1>equivalence bash - command prompt - powershell</h1>
 	<p>Reference: <a target="_blank" rel="noreferrer" href="https://ss64.com/">SS64</a></p>
+	<ul>multi-line command:
+		<li>bash: <code>\</code> backslash</li>
+		<li>cmd: <code>^</code> caret</li>
+		<li>pwsh: <code>`</code> backtick</li>
+	</ul>
 	<p>windows commands are always case insensitive</p>
 	<table border="1" frame="box">
 		<thead><tr>
@@ -74,14 +79,19 @@
 				<td>Set-Alias</td>
 			</tr>
 			<tr>
-				<td>date</td>
-				<td class="table-na"></td>
-				<td>Get-Date</td>
-			</tr>
-			<tr>
 				<td>tee</td>
 				<td class="table-na"></td>
 				<td>Tee-Object</td>
+			</tr>
+			<tr>
+				<td>&amp;&gt; ███</td>
+				<td>&gt; ███ 2&gt;&amp;1</td>
+				<td>*&gt; ███</td>
+			</tr>
+			<tr>
+				<td>/dev/null</td>
+				<td>NUL</td>
+				<td>$null</td>
 			</tr>
 			<tr>
 				<td>ping</td>
@@ -104,11 +114,31 @@
 				<td>Remove-Item</td>
 			</tr>
 			<tr>
+				<td>mkdir</td>
+				<td>MD</td>
+				<td>New-Item -ItemType Directory</td>
+			</tr>
+			<tr>
+				<td>ln -s</td>
+				<td>MKLINK file<br />MKLINK /D dir</td>
+				<td>New-Item -ItemType SymbolicLink</td>
+			</tr>
+			<tr>
+				<td>ln</td>
+				<td>MKLINK /H file<br />MKLINK /J dir</td>
+				<td>New-Item -ItemType HardLink<br />New-Item -ItemType Junction</td>
+			</tr>
+			<tr>
 				<td>clear</td>
 				<td>CLS</td>
 				<td>Clear-Host</td>
 			</tr>
 		</tbody>
 	</table>
+	<ul>get current time:
+		<li>bash: <code>date '+%Y-%m-%d %A %H:%M %Z'</code></li>
+		<li>cmd: <code>DATE /T && TIME /T && TZUTIL /G</code></li>
+		<li>pwsh: <code>Get-Date -format "yyyy-MM-dd dddd HH:mm zzz"</code></li>
+	</ul>
 </body>
 </html>
