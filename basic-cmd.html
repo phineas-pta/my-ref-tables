@@ -3,25 +3,39 @@
 <head>
 	<title>very basic shell commands</title>
 	<meta name="author" content="PTA" />
-	<style>
-		table {border-collapse: collapse;}
-		th {font-size: 2vh; padding: 5px;}
-		td {font-family: monospace; padding: 5px;}
-		td.table-na {background: #ececec; color: #2C2C2C;}
-	</style>
 	<meta charset="UTF-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<style>
+		p + ul {margin-top: -10px;}
+		table {border-collapse: collapse;}
+		thead {background-color: #efefef;}
+		th, td {border-style: solid; border-width: thin; padding: 5px;}
+		th {font-size: 2vh;}
+		td {font-family: monospace;}
+		td.table-na {background: #ececec; color: #2C2C2C;}
+	</style>
+	<script>
+		window.onload = (event) => {
+			for (let element of document.querySelectorAll("a.my-ref")) {
+				element.setAttribute("href", element.textContent);
+				element.setAttribute("target", "_blank");
+				element.setAttribute("rel", "noreferrer");
+			}
+			console.log("done: auto-clickable url");
+		};
+	</script>
 </head>
 <body>
 	<h1>equivalence bash - command prompt - powershell</h1>
-	<p>Reference: <a target="_blank" rel="noreferrer" href="https://ss64.com/">SS64</a></p>
-	<ul>multi-line command:
+	<p>copied from: <a class="my-ref">https://ss64.com</a></p>
+	<p>multi-line command:</p>
+	<ul>
 		<li>bash: <code>\</code> backslash</li>
 		<li>cmd: <code>^</code> caret</li>
 		<li>pwsh: <code>`</code> backtick</li>
 	</ul>
 	<p>windows commands are always case insensitive</p>
-	<table border="1" frame="box">
+	<table>
 		<thead><tr>
 			<th>bash</th>
 			<th>cmd</th>
@@ -135,7 +149,8 @@
 			</tr>
 		</tbody>
 	</table>
-	<ul>get current time:
+	<p>get current time:</p>
+	<ul>
 		<li>bash: <code>date '+%Y-%m-%d %A %H:%M %Z'</code></li>
 		<li>cmd: <code>DATE /T && TIME /T && TZUTIL /G</code></li>
 		<li>pwsh: <code>Get-Date -format "yyyy-MM-dd dddd HH:mm zzz"</code></li>

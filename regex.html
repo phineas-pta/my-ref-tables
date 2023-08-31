@@ -3,900 +3,923 @@
 <head>
 	<title>Regular expression cheat sheet</title>
 	<meta name="author" content="PTA" />
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
 	<style>
+		p + ul {margin-top: -10px;}
 		table {border-collapse: collapse;}
-		th {font-size: 2vh; padding: 5px;}
-		td {padding: 5px;}
+		thead {background-color: #efefef;}
+		th, td {border-style: solid; border-width: thin; padding: 5px;}
+		th {font-size: 2vh;}
 		h1, h2 {text-align: center;}
 		hr {border-top: 1px dotted red;}
 	</style>
-	<meta charset="UTF-8" />
-	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<script>
+		window.onload = (event) => {
+			for (let element of document.querySelectorAll("a.my-ref")) {
+				element.setAttribute("href", element.textContent);
+				element.setAttribute("target", "_blank");
+				element.setAttribute("rel", "noreferrer");
+			}
+			console.log("done: auto-clickable url");
+		};
+	</script>
 </head>
 <body>
-	<h1>Light version</h1>
-	<p>A remake of the cheat sheet found in the book “The Bastards Book of Regular Expressions” by Dan Nguyen</p>
-	<table border="1" frame="box">
-		<thead>
-			<tr>
-				<th rowspan="2">Syntax</th>
-				<th rowspan="2">Explanation</th>
-				<th colspan="5">Example</th>
-			</tr>
-			<tr>
-				<th>Find</th>
-				<th>Replace</th>
-				<th>Original text</th>
-				<th>Replace first</th>
-				<th>Replace all</th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr>
-				<td><code>^</code></td>
-				<td>Beginning of line</td>
-				<td><code>^a</code></td>
-				<td><code>A</code></td>
-				<td>an aria</td>
-				<td>An aria</td>
-				<td>(same)</td>
-			</tr>
-			<tr>
-				<td><code>$</code></td>
-				<td>End of line</td>
-				<td><code>a$</code></td>
-				<td><code>d</code></td>
-				<td>an aria</td>
-				<td>an arid</td>
-				<td>(same)</td>
-			</tr>
-			<tr>
-				<td><code>\b</code></td>
-				<td>Word boundary</td>
-				<td><code>\ba\b</code></td>
-				<td><code>an</code></td>
-				<td>an aria a</td>
-				<td>an aria</td>
-				<td>an aria an</td>
-			</tr>
-			<tr>
-				<td><code>\B</code></td>
-				<td>Not a word boundary</td>
-				<td><code>a\B</code></td>
-				<td><code>o</code></td>
-				<td>an aria</td>
-				<td>on oria</td>
-				<td>(same)</td>
-			</tr>
-			<tr>
-				<td><code>\s</code></td>
-				<td>Whitespace character (includes new lines)</td>
-				<td><code>\s</code></td>
-				<td><code>-</code></td>
-				<td>Hey hey hey</td>
-				<td>Hey-hey hey</td>
-				<td>Hey-hey-hey</td>
-			</tr>
-			<tr>
-				<td><code>\S</code></td>
-				<td>Not a whitespace character</td>
-				<td><code>\S</code></td>
-				<td><code>-</code></td>
-				<td>Hey hey</td>
-				<td>-ey hey</td>
-				<td>--- ---</td>
-			</tr>
-			<tr>
-				<td><code>\n </code>or<code> \r</code></td>
-				<td>Newline character</td>
-				<td><code>\n</code></td>
-				<td><code>-</code></td>
-				<td>Hey hey hey</td>
-				<td>Hey-hey hey</td>
-				<td>Hey-hey-hey</td>
-			</tr>
-			<tr>
-				<td><code>\t</code></td>
-				<td>Tab character</td>
-				<td><code>\t</code></td>
-				<td><code>,</code></td>
-				<td>Albany NY</td>
-				<td>Albany,NY US</td>
-				<td>Albany,NY,US</td>
-			</tr>
-			<tr>
-				<td><code>.</code></td>
-				<td>Match any character except newlines</td>
-				<td><code>a..</code></td>
-				<td><code>xyz</code></td>
-				<td>an apple
-					a bear</td>
-				<td>xyzapple
-					a bear</td>
-				<td>xyzxyzle
-					xyzear</td>
-			</tr>
-			<tr>
-				<td><code>\w</code></td>
-				<td>A word character: letters, numbers, including underscore</td>
-				<td><code>a\w</code></td>
-				<td><code>xy</code></td>
-				<td>an apple</td>
-				<td>xy apple</td>
-				<td>xy xyple</td>
-			</tr>
-			<tr>
-				<td><code>\W</code></td>
-				<td>Not a word character</td>
-				<td><code>\W</code></td>
-				<td><code>-</code></td>
-				<td>The cat.</td>
-				<td>The-cat.</td>
-				<td>The-cat-</td>
-			</tr>
-			<tr>
-				<td><code>x|y</code></td>
-				<td>Either <code>x</code> or <code>y</code></td>
-				<td><code>dog|cat</code></td>
-				<td><code>rat</code></td>
-				<td>The cat and dog</td>
-				<td>The rat and dog</td>
-				<td>The rat and rat</td>
-			</tr>
-			<tr>
-				<td><code>[abc]</code></td>
-				<td>Either of <code>a</code>, <code>b</code>, <code>c</code></td>
-				<td><code>[abc]</code></td>
-				<td><code>x</code></td>
-				<td>a bearcat</td>
-				<td>x bearcat</td>
-				<td>x bexrxxt</td>
-			</tr>
-			<tr>
-				<td><code>[^xyz]</code></td>
-				<td>Anything but <code>x</code>, <code>y</code>, <code>z</code></td>
-				<td><code>[^abc]</code></td>
-				<td><code>x</code></td>
-				<td>a bearcat</td>
-				<td>a bxarcat</td>
-				<td>a bxaxcax</td>
-			</tr>
-			<tr>
-				<td><code>[a-z]</code></td>
-				<td>Any letters <code>a</code> through <code>z</code></td>
-				<td><code>[A-Z]</code></td>
-				<td><code>x</code></td>
-				<td>The Cat</td>
-				<td>xhe Cat</td>
-				<td>xhe xat</td>
-			</tr>
-			<tr>
-				<td><code>?</code></td>
-				<td>Zero or one</td>
-				<td><code>x?ray</code></td>
-				<td><code>laser</code></td>
-				<td>xray ray xxray</td>
-				<td>laser ray xxray</td>
-				<td>laser laser xlaser</td>
-			</tr>
-			<tr>
-				<td><code>*</code></td>
-				<td>Zero or more</td>
-				<td><code>x*ray</code></td>
-				<td><code>laser</code></td>
-				<td>xray ray xxray</td>
-				<td>laser ray xxray</td>
-				<td>laser laser laser</td>
-			</tr>
-			<tr>
-				<td><code>+</code></td>
-				<td>One or more</td>
-				<td><code>\w+a</code></td>
-				<td><code>x</code></td>
-				<td>baaaa baaaa</td>
-				<td>x baaaa</td>
-				<td>x x</td>
-			</tr>
-			<tr>
-				<td><code>+?</code></td>
-				<td>Lazy one or more</td>
-				<td><code>\w+?a</code></td>
-				<td><code>x</code></td>
-				<td>baaaa baaaa</td>
-				<td>xaaa baaaa</td>
-				<td>xxa xxa</td>
-			</tr>
-			<tr>
-				<td><code>{2}</code></td>
-				<td>Match exactly 2 occurrences</td>
-				<td><code>ba</code><code>{2}</code></td>
-				<td><code>x</code></td>
-				<td>babaaaa babaaaa</td>
-				<td>baxaa babaaaa</td>
-				<td>baxaa baxaa</td>
-			</tr>
-			<tr>
-				<td><code>{2,6}</code></td>
-				<td>Match between 2 to 6 occurrences</td>
-				<td><code>ba</code><code>{2,3}</code></td>
-				<td><code>x</code></td>
-				<td>babaaaa babaaaa</td>
-				<td>baxa babaaaa</td>
-				<td>baxa baxa</td>
-			</tr>
-			<tr>
-				<td><code>{2,}</code></td>
-				<td>Match 2 or more occurrences</td>
-				<td><code>ba</code><code>{2,}</code></td>
-				<td><code>x</code></td>
-				<td>babaaaa babaaaa</td>
-				<td>bax babaaaa</td>
-				<td>bax bax</td>
-			</tr>
-			<tr>
-				<td><code>a(?=bc)</code></td>
-				<td>Positive lookahead</td>
-				<td><code>J(?=on)</code></td>
-				<td><code>D</code></td>
-				<td>Jon Jay Jones</td>
-				<td>Don Jay Jones</td>
-				<td>Don Jay Dones</td>
-			</tr>
-			<tr>
-				<td><code>a(?!bc)</code></td>
-				<td>Negative lookahead</td>
-				<td><code>J(?!on)</code></td>
-				<td><code>D</code></td>
-				<td>Jon Jay Jones</td>
-				<td>Jon Day Jones</td>
-				<td>(same)</td>
-			</tr>
-			<tr>
-				<td><code>(?&lt;=a)bc</code></td>
-				<td>Positive look behind</td>
-				<td><code>(?&lt;=\d)\.\d\d</code></td>
-				<td><code>bucks</code></td>
-				<td>He spent 12.42.</td>
-				<td>He spent 12 bucks.</td>
-				<td>(same)</td>
-			</tr>
-			<tr>
-				<td><code>(?&lt;!a)bc</code></td>
-				<td>Negative look behind</td>
-				<td><code>(?&lt;</code><code>!\d)\.</code></td>
-				<td><code>!</code></td>
-				<td>He spent 12.42.</td>
-				<td>He spent 12.42!</td>
-				<td>(same)</td>
-			</tr>
-			<tr>
-				<td><code>(?:abc)</code></td>
-				<td>Non-capturing group</td>
-				<td><code>gr(?:a|e)y</code></td>
-				<td><code>black</code></td>
-				<td>grey and gray</td>
-				<td>black and gray</td>
-				<td>black and black</td>
-			</tr>
-			<tr>
-				<td><code>(abc)</code></td>
-				<td>Capturing group</td>
-				<td><code>(\d)(\d)(\d)</code></td>
-				<td><code>\3\2\1 </code>or <code>$3$2$1</code></td>
-				<td>123456</td>
-				<td>321456</td>
-				<td>321654</td>
-			</tr>
-			<tr>
-				<td><code>\</code></td>
-				<td>Skip a metacharacter after the backslash</td>
-				<td><code>\?</code></td>
-				<td><code>.</code></td>
-				<td>He said it??</td>
-				<td>He said it.?</td>
-				<td>He said it..</td>
-			</tr>
-		</tbody>
-	</table>
+	<section>
+		<header><h1>Light version</h1></header>
+		<p>copy with modif from: cheat sheet page 165 in book <a class="my-ref">https://leanpub.com/bastards-regexes</a></p>
+		<table>
+			<thead>
+				<tr>
+					<th rowspan="2">Syntax</th>
+					<th rowspan="2">Explanation</th>
+					<th colspan="5">Example</th>
+				</tr>
+				<tr>
+					<th>Find</th>
+					<th>Replace</th>
+					<th>Original text</th>
+					<th>Replace first</th>
+					<th>Replace all</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td><code>^</code></td>
+					<td>Beginning of line</td>
+					<td><code>^a</code></td>
+					<td><code>A</code></td>
+					<td>an aria</td>
+					<td>An aria</td>
+					<td>(same)</td>
+				</tr>
+				<tr>
+					<td><code>$</code></td>
+					<td>End of line</td>
+					<td><code>a$</code></td>
+					<td><code>d</code></td>
+					<td>an aria</td>
+					<td>an arid</td>
+					<td>(same)</td>
+				</tr>
+				<tr>
+					<td><code>\b</code></td>
+					<td>Word boundary</td>
+					<td><code>\ba\b</code></td>
+					<td><code>an</code></td>
+					<td>an aria a</td>
+					<td>an aria</td>
+					<td>an aria an</td>
+				</tr>
+				<tr>
+					<td><code>\B</code></td>
+					<td>Not a word boundary</td>
+					<td><code>a\B</code></td>
+					<td><code>o</code></td>
+					<td>an aria</td>
+					<td>on oria</td>
+					<td>(same)</td>
+				</tr>
+				<tr>
+					<td><code>\s</code></td>
+					<td>Whitespace character (includes new lines)</td>
+					<td><code>\s</code></td>
+					<td><code>-</code></td>
+					<td>Hey hey hey</td>
+					<td>Hey-hey hey</td>
+					<td>Hey-hey-hey</td>
+				</tr>
+				<tr>
+					<td><code>\S</code></td>
+					<td>Not a whitespace character</td>
+					<td><code>\S</code></td>
+					<td><code>-</code></td>
+					<td>Hey hey</td>
+					<td>-ey hey</td>
+					<td>--- ---</td>
+				</tr>
+				<tr>
+					<td><code>\n </code>or<code> \r</code></td>
+					<td>Newline character</td>
+					<td><code>\n</code></td>
+					<td><code>-</code></td>
+					<td>Hey hey hey</td>
+					<td>Hey-hey hey</td>
+					<td>Hey-hey-hey</td>
+				</tr>
+				<tr>
+					<td><code>\t</code></td>
+					<td>Tab character</td>
+					<td><code>\t</code></td>
+					<td><code>,</code></td>
+					<td>Albany NY</td>
+					<td>Albany,NY US</td>
+					<td>Albany,NY,US</td>
+				</tr>
+				<tr>
+					<td><code>.</code></td>
+					<td>Match any character except newlines</td>
+					<td><code>a..</code></td>
+					<td><code>xyz</code></td>
+					<td>an apple
+						a bear</td>
+					<td>xyzapple
+						a bear</td>
+					<td>xyzxyzle
+						xyzear</td>
+				</tr>
+				<tr>
+					<td><code>\w</code></td>
+					<td>A word character: letters, numbers, including underscore</td>
+					<td><code>a\w</code></td>
+					<td><code>xy</code></td>
+					<td>an apple</td>
+					<td>xy apple</td>
+					<td>xy xyple</td>
+				</tr>
+				<tr>
+					<td><code>\W</code></td>
+					<td>Not a word character</td>
+					<td><code>\W</code></td>
+					<td><code>-</code></td>
+					<td>The cat.</td>
+					<td>The-cat.</td>
+					<td>The-cat-</td>
+				</tr>
+				<tr>
+					<td><code>x|y</code></td>
+					<td>Either <code>x</code> or <code>y</code></td>
+					<td><code>dog|cat</code></td>
+					<td><code>rat</code></td>
+					<td>The cat and dog</td>
+					<td>The rat and dog</td>
+					<td>The rat and rat</td>
+				</tr>
+				<tr>
+					<td><code>[abc]</code></td>
+					<td>Either of <code>a</code>, <code>b</code>, <code>c</code></td>
+					<td><code>[abc]</code></td>
+					<td><code>x</code></td>
+					<td>a bearcat</td>
+					<td>x bearcat</td>
+					<td>x bexrxxt</td>
+				</tr>
+				<tr>
+					<td><code>[^xyz]</code></td>
+					<td>Anything but <code>x</code>, <code>y</code>, <code>z</code></td>
+					<td><code>[^abc]</code></td>
+					<td><code>x</code></td>
+					<td>a bearcat</td>
+					<td>a bxarcat</td>
+					<td>a bxaxcax</td>
+				</tr>
+				<tr>
+					<td><code>[a-z]</code></td>
+					<td>Any letters <code>a</code> through <code>z</code></td>
+					<td><code>[A-Z]</code></td>
+					<td><code>x</code></td>
+					<td>The Cat</td>
+					<td>xhe Cat</td>
+					<td>xhe xat</td>
+				</tr>
+				<tr>
+					<td><code>?</code></td>
+					<td>Zero or one</td>
+					<td><code>x?ray</code></td>
+					<td><code>laser</code></td>
+					<td>xray ray xxray</td>
+					<td>laser ray xxray</td>
+					<td>laser laser xlaser</td>
+				</tr>
+				<tr>
+					<td><code>*</code></td>
+					<td>Zero or more</td>
+					<td><code>x*ray</code></td>
+					<td><code>laser</code></td>
+					<td>xray ray xxray</td>
+					<td>laser ray xxray</td>
+					<td>laser laser laser</td>
+				</tr>
+				<tr>
+					<td><code>+</code></td>
+					<td>One or more</td>
+					<td><code>\w+a</code></td>
+					<td><code>x</code></td>
+					<td>baaaa baaaa</td>
+					<td>x baaaa</td>
+					<td>x x</td>
+				</tr>
+				<tr>
+					<td><code>+?</code></td>
+					<td>Lazy one or more</td>
+					<td><code>\w+?a</code></td>
+					<td><code>x</code></td>
+					<td>baaaa baaaa</td>
+					<td>xaaa baaaa</td>
+					<td>xxa xxa</td>
+				</tr>
+				<tr>
+					<td><code>{2}</code></td>
+					<td>Match exactly 2 occurrences</td>
+					<td><code>ba</code><code>{2}</code></td>
+					<td><code>x</code></td>
+					<td>babaaaa babaaaa</td>
+					<td>baxaa babaaaa</td>
+					<td>baxaa baxaa</td>
+				</tr>
+				<tr>
+					<td><code>{2,6}</code></td>
+					<td>Match between 2 to 6 occurrences</td>
+					<td><code>ba</code><code>{2,3}</code></td>
+					<td><code>x</code></td>
+					<td>babaaaa babaaaa</td>
+					<td>baxa babaaaa</td>
+					<td>baxa baxa</td>
+				</tr>
+				<tr>
+					<td><code>{2,}</code></td>
+					<td>Match 2 or more occurrences</td>
+					<td><code>ba</code><code>{2,}</code></td>
+					<td><code>x</code></td>
+					<td>babaaaa babaaaa</td>
+					<td>bax babaaaa</td>
+					<td>bax bax</td>
+				</tr>
+				<tr>
+					<td><code>a(?=bc)</code></td>
+					<td>Positive lookahead</td>
+					<td><code>J(?=on)</code></td>
+					<td><code>D</code></td>
+					<td>Jon Jay Jones</td>
+					<td>Don Jay Jones</td>
+					<td>Don Jay Dones</td>
+				</tr>
+				<tr>
+					<td><code>a(?!bc)</code></td>
+					<td>Negative lookahead</td>
+					<td><code>J(?!on)</code></td>
+					<td><code>D</code></td>
+					<td>Jon Jay Jones</td>
+					<td>Jon Day Jones</td>
+					<td>(same)</td>
+				</tr>
+				<tr>
+					<td><code>(?&lt;=a)bc</code></td>
+					<td>Positive look behind</td>
+					<td><code>(?&lt;=\d)\.\d\d</code></td>
+					<td><code>bucks</code></td>
+					<td>He spent 12.42.</td>
+					<td>He spent 12 bucks.</td>
+					<td>(same)</td>
+				</tr>
+				<tr>
+					<td><code>(?&lt;!a)bc</code></td>
+					<td>Negative look behind</td>
+					<td><code>(?&lt;</code><code>!\d)\.</code></td>
+					<td><code>!</code></td>
+					<td>He spent 12.42.</td>
+					<td>He spent 12.42!</td>
+					<td>(same)</td>
+				</tr>
+				<tr>
+					<td><code>(?:abc)</code></td>
+					<td>Non-capturing group</td>
+					<td><code>gr(?:a|e)y</code></td>
+					<td><code>black</code></td>
+					<td>grey and gray</td>
+					<td>black and gray</td>
+					<td>black and black</td>
+				</tr>
+				<tr>
+					<td><code>(abc)</code></td>
+					<td>Capturing group</td>
+					<td><code>(\d)(\d)(\d)</code></td>
+					<td><code>\3\2\1 </code>or <code>$3$2$1</code></td>
+					<td>123456</td>
+					<td>321456</td>
+					<td>321654</td>
+				</tr>
+				<tr>
+					<td><code>\</code></td>
+					<td>Skip a metacharacter after the backslash</td>
+					<td><code>\?</code></td>
+					<td><code>.</code></td>
+					<td>He said it??</td>
+					<td>He said it.?</td>
+					<td>He said it..</td>
+				</tr>
+			</tbody>
+		</table>
+	</section>
 	<br />
 	<hr />
-	<h1>Full version made by &amp; for unicode</h1>
-	<ul>References:
-		<li><a target="_blank" rel="noreferrer" href="https://unicode-org.github.io/icu/userguide/strings/regexp.html">ICU regex flavour</a></li>
-		<li><a target="_blank" rel="noreferrer" href="https://www.unicode.org/reports/tr18/">unicode technical standard #18</a></li>
-	</ul>
-	<h2>UnicodeSet Patterns</h2>
-	<table border="1" frame="box">
-		<thead><tr>
-			<th>&nbsp;</th>
-			<th>Positive</th>
-			<th>Negative</th>
-		</tr></thead>
-		<tbody>
-			<tr>
-				<td>POSIX-style Syntax</td>
-				<td><code>[:type=value:]</code></td>
-				<td><code>[:^type=value:]</code></td>
-			</tr>
-			<tr>
-				<td>Perl-style Syntax</td>
-				<td><code>\p{type=value}</code></td>
-				<td><code>\P{type=value}</code></td>
-			</tr>
-		</tbody>
-	</table>
-	<br />
-	<table border="1"><tbody><tr>
-		<td width="33%"><table><tbody>
-			<tr>
-				<td><strong>L</strong></td>
-				<td><strong>Letter</strong></td>
-			</tr>
-			<tr>
-				<td>Lu</td>
-				<td>Uppercase Letter</td>
-			</tr>
-			<tr>
-				<td>Ll</td>
-				<td>Lowercase Letter</td>
-			</tr>
-			<tr>
-				<td>Lt</td>
-				<td>Titlecase Letter</td>
-			</tr>
-			<tr>
-				<td>Lm</td>
-				<td>Modifier Letter</td>
-			</tr>
-			<tr>
-				<td>Lo</td>
-				<td>Other Letter</td>
-			</tr>
-			<tr>
-				<td><strong>M</strong></td>
-				<td><strong>Mark</strong></td>
-			</tr>
-			<tr>
-				<td>Mn</td>
-				<td>Non-Spacing Mark</td>
-			</tr>
-			<tr>
-				<td>Mc</td>
-				<td>Spacing Combining Mark</td>
-			</tr>
-			<tr>
-				<td>Me</td>
-				<td>Enclosing Mark</td>
-			</tr>
-			<tr>
-				<td><strong>N</strong></td>
-				<td><strong>Number</strong></td>
-			</tr>
-			<tr>
-				<td>Nd</td>
-				<td>Decimal Digit Number</td>
-			</tr>
-			<tr>
-				<td>Nl</td>
-				<td>Letter Number</td>
-			</tr>
-			<tr>
-				<td>No</td>
-				<td>Other Number</td>
-			</tr>
-		</tbody></table></td>
-		<td width="33%"><table><tbody>
-			<tr>
-				<td><strong>S</strong></td>
-				<td><strong>Symbol</strong></td>
-			</tr>
-			<tr>
-				<td>Sm</td>
-				<td>Math Symbol</td>
-			</tr>
-			<tr>
-				<td>Sc</td>
-				<td>Currency Symbol</td>
-			</tr>
-			<tr>
-				<td>Sk</td>
-				<td>Modifier Symbol</td>
-			</tr>
-			<tr>
-				<td>So</td>
-				<td>Other Symbol</td>
-			</tr>
-			<tr>
-				<td><strong>P</strong></td>
-				<td><strong>Punctuation</strong></td>
-			</tr>
-			<tr>
-				<td>Pc</td>
-				<td>Connector Punctuation</td>
-			</tr>
-			<tr>
-				<td>Pd</td>
-				<td>Dash Punctuation</td>
-			</tr>
-			<tr>
-				<td>Ps</td>
-				<td>Open Punctuation</td>
-			</tr>
-			<tr>
-				<td>Pe</td>
-				<td>Close Punctuation</td>
-			</tr>
-			<tr>
-				<td>Pi</td>
-				<td>Initial Punctuation</td>
-			</tr>
-			<tr>
-				<td>Pf</td>
-				<td>Final Punctuation</td>
-			</tr>
-			<tr>
-				<td>Po</td>
-				<td>Other Punctuation</td>
-			</tr>
-		</tbody></table></td>
-		<td width="33%"><table><tbody>
-			<tr>
-				<td><strong>Z</strong></td>
-				<td><strong>Separator</strong></td>
-			</tr>
-			<tr>
-				<td>Zs</td>
-				<td>Space Separator</td>
-			</tr>
-			<tr>
-				<td>Zl</td>
-				<td>Line Separator</td>
-			</tr>
-			<tr>
-				<td>Zp</td>
-				<td>Paragraph Separator</td>
-			</tr>
-			<tr>
-				<td><strong>C</strong></td>
-				<td><strong>Other</strong></td>
-			</tr>
-			<tr>
-				<td>Cc</td>
-				<td>Control</td>
-			</tr>
-			<tr>
-				<td>Cf</td>
-				<td>Format</td>
-			</tr>
-			<tr>
-				<td>Cs</td>
-				<td>Surrogate</td>
-			</tr>
-			<tr>
-				<td>Co</td>
-				<td>Private Use</td>
-			</tr>
-			<tr>
-				<td>Cn</td>
-				<td>Unassigned</td>
-			</tr>
-			<tr>
-				<td>-</td>
-				<td>Any*</td>
-			</tr>
-			<tr>
-				<td>-</td>
-				<td>Assigned*</td>
-			</tr>
-			<tr>
-				<td>-</td>
-				<td>ASCII*</td>
-			</tr>
-		</tbody></table></td>
-	</tr></tbody></table>
-	<h2>Set Expressions (Character Classes)</h2>
-	<table border="1" frame="box">
-		<thead><tr>
-			<th>Example</th>
-			<th>Description</th>
-		</tr></thead>
-		<tbody>
-			<tr>
-				<td><code>[abc]</code></td>
-				<td>Match any of the characters a, b or c.</td>
-			</tr>
-			<tr>
-				<td><code>[^abc]</code></td>
-				<td>Negation - match any character except a, b or c.</td>
-			</tr>
-			<tr>
-				<td><code>[A-M]</code></td>
-				<td>Range - match any character from A to M. The characters to include are determined by Unicode code point ordering.</td>
-			</tr>
-			<tr>
-				<td><code>[\u0000-\U0010ffff]</code></td>
-				<td>Range - match all characters.</td>
-			</tr>
-			<tr>
-				<td><code>[\p{L}]<br />[\p{Letter}]<br />[\p{General_Category=Letter}]</code></td>
-				<td>Characters with Unicode Category = Letter. All forms shown are equivalent.</td>
-			</tr>
-			<tr>
-				<td><code>[\P{Letter}]</code></td>
-				<td>Negated property. (Upper case \P) Match everything except Letters.</td>
-			</tr>
-			<tr>
-				<td><code>[\p{numeric_value=9}]</code></td>
-				<td>Match all numbers with a numeric value of 9. Any Unicode Property may be used in set expressions.</td>
-			</tr>
-			<tr>
-				<td><code>[[a-z][A-Z][0-9]]<br />[a-zA-Z0-9]<br />[a-z||A-Z||0-9]</code></td>
-				<td>Logical OR or Union of Sets. The examples match ASCII letters and digits. The two forms are equivalent.</td>
-			</tr>
-			<tr>
-				<td><code>[\p{Letter}&amp;&amp;\p{script=cyrillic}]</code></td>
-				<td>Logical AND or intersection. Match the set of all Cyrillic letters.</td>
-			</tr>
-			<tr>
-				<td><code>[\p{Letter}--\p{script=latin}]</code></td>
-				<td>Subtraction. Match all non-Latin letters.</td>
-			</tr>
-			<tr>
-				<td><code>[\p{letter}~~\p{ascii}]</code></td>
-				<td>Logical XOR or symmetric difference. Match either letter or ascii, but not both</td>
-			</tr>
-		</tbody>
-	</table>
-	<h2>Regular Expression Metacharacters</h2>
-	<table border="1" frame="box">
-		<thead><tr>
-			<th>Character</th>
-			<th>Description</th>
-		</tr></thead>
-		<tbody>
-			<tr>
-				<td><code>\a</code></td>
-				<td>Match a BELL <code>\u0007</code>.</td>
-			</tr>
-			<tr>
-				<td><code>\A</code></td>
-				<td>Match at the beginning of the input. Differs from ^ in that <code>\A</code> will not match after a new line within the input.</td>
-			</tr>
-			<tr>
-				<td><code>\b</code></td>
-				<td>Match if the current position is a word boundary. Boundaries occur at the transitions between word (<code>\w</code>) and non-word (<code>\W</code>) characters, with combining marks ignored.</td>
-			</tr>
-			<tr>
-				<td><code>\B</code></td>
-				<td>Match if the current position is not a word boundary.</td>
-			</tr>
-			<tr>
-				<td><code>\c<em>X</em></code></td>
-				<td>Match a control-<em>X</em> character.</td>
-			</tr>
-			<tr>
-				<td><code>\d</code></td>
-				<td>Match any character with the Unicode General Category of Nd (Number, Decimal Digit.)</td>
-			</tr>
-			<tr>
-				<td><code>\D</code></td>
-				<td>Match any character that is not a decimal digit.</td>
-			</tr>
-			<tr>
-				<td><code>\e</code></td>
-				<td>Match an ESCAPE <code>\u001B</code>.</td>
-			</tr>
-			<tr>
-				<td><code>\f</code></td>
-				<td>Match a FORM FEED <code>\u000C<code>.</td>
-			</tr>
-			<tr>
-				<td><code>\G</code></td>
-				<td>Match if the current position is at the end of the previous match.</td>
-			</tr>
-			<tr>
-				<td><code>\h</code></td>
-				<td>Match a Horizontal White Space character. They are characters with Unicode General Category of Space_Separator plus the ASCII tab <code>\u0009</code>.</td>
-			</tr>
-			<tr>
-				<td><code>\H</code></td>
-				<td>Match a non-Horizontal White Space character.</td>
-			</tr>
-			<tr>
-				<td><code>\k&lt;<em>name</em>&gt;</code></td>
-				<td>Named Capture Back Reference.</td>
-			</tr>
-			<tr>
-				<td><code>\n</code></td>
-				<td>Match a LINE FEED <code>\u000A</code>.</td>
-			</tr>
-			<tr>
-				<td><code>\N{<em>UNICODE CHARACTER NAME</em>}</code></td>
-				<td>Match the named character.</td>
-			</tr>
-			<tr>
-				<td><code>\p{<em>UNICODE PROPERTY NAME</em>}</code></td>
-				<td>Match any character with the specified Unicode Property.</td>
-			</tr>
-			<tr>
-				<td><code>\P{<em>UNICODE PROPERTY NAME</em>}</code></td>
-				<td>Match any character not having the specified Unicode Property.</td>
-			</tr>
-			<tr>
-				<td><code>\Q … \E</code></td>
-				<td>Quotes all characters.</td>
-			</tr>
-			<tr>
-				<td><code>\r</code></td>
-				<td>Match a CARRIAGE RETURN <code>\u000D</code>.</td>
-			</tr>
-			<tr>
-				<td><code>\R</code></td>
-				<td>Match a new line character, or the sequence <code>CR LF</code>. The new line characters are <code>\u000a, \u000b, \u000c, \u000d, \u0085, \u2028, \u2029</code>.</td>
-			</tr>
-			<tr>
-				<td><code>\s</code></td>
-				<td>Match a white space character. White space is defined as <code>[\t\n\f\r\p{Z}]</code>.</td>
-			</tr>
-			<tr>
-				<td><code>\S</code></td>
-				<td>Match a non-white space character.</td>
-			</tr>
-			<tr>
-				<td><code>\t</code></td>
-				<td>Match a HORIZONTAL TABULATION <code>\u0009</code>.</td>
-			</tr>
-			<tr>
-				<td><code>\u<em>hhhh</em></code></td>
-				<td>Match the character with the hex value <em>hhhh</em>.</td>
-			</tr>
-			<tr>
-				<td><code>\U<em>hhhhhhhh</code></td>
-				<td>Match the character with the hex value <em>hhhhhhhh</em>. Exactly 8 hex digits must be provided, even though the largest Unicode code point is <code>\U0010ffff</code>.</td>
-			</tr>
-			<tr>
-				<td><code>\v</code></td>
-				<td>Match a new line character. The new line characters are <code>\u000a, \u000b, \u000c, \u000d, \u0085, \u2028, \u2029</code>. Does not match the new line sequence <code>CR LF</code>.</td>
-			</tr>
-			<tr>
-				<td><code>\V</code></td>
-				<td>Match a non-new line character.</td>
-			</tr>
-			<tr>
-				<td><code>\w</code></td>
-				<td>Match a word character. Word characters are <code>[\p{Alphabetic}\p{Mark}\p{Decimal_Number}\p{Connector_Punctuation}\u200c\u200d]</code>.</td>
-			</tr>
-			<tr>
-				<td><code>\W</code></td>
-				<td>Match a non-word character.</td>
-			</tr>
-			<tr>
-				<td><code>\x{<em>hhhh</em>}</code></td>
-				<td>Match the character with hex value <em>hhhh</em>. From 1 to 6 hex digits may be supplied.</td>
-			</tr>
-			<tr>
-				<td><code>\x<em>hh</code></td>
-				<td>Match the character with two digit hex value <em>hh</em>.</td>
-			</tr>
-			<tr>
-				<td><code>\X</code></td>
-				<td>Match a Grapheme Cluster.</td>
-			</tr>
-			<tr>
-				<td><code>\Z</code></td>
-				<td>Match if the current position is at the end of input, but before the final line terminator, if one exists.</td>
-			</tr>
-			<tr>
-				<td><code>\z</code></td>
-				<td>Match if the current position is at the end of input.</td>
-			</tr>
-			<tr>
-				<td><code>\<em>n</em></code></td>
-				<td>Back Reference. Match whatever the nth capturing group matched. <em>n</em> must be a number &gt; 1 and &lt; total number of capture groups in the pattern.</td>
-			</tr>
-			<tr>
-				<td><code>\0<em>ooo</code></td>
-				<td>Match an Octal character. ‘ooo’ is from one to three octal digits. 0377 is the largest allowed Octal character. The leading zero is required; it distinguishes Octal constants from back references.</td>
-			</tr>
-			<tr>
-				<td><code>[<em>pattern</em>]</code></td>
-				<td>Match any one character from the set.</td>
-			</tr>
-			<tr>
-				<td><code>.</code></td>
-				<td>Match any character.</td>
-			</tr>
-			<tr>
-				<td><code>^</code></td>
-				<td>Match at the beginning of a line.</td>
-			</tr>
-			<tr>
-				<td><code>$</code></td>
-				<td>Match at the end of a line. Line terminating characters are <code>\u000a, \u000b, \u000c, \u000d, \u0085, \u2028, \u2029</code> and the sequence <code>\u000d \u000a</code>.</td>
-			</tr>
-			<tr>
-				<td><code>\</code></td>
-				<td>Quotes the following character. Characters that must be quoted to be treated as literals are <code>* ? + [ ( ) { } ^ $ | \ .</code></td>
-			</tr>
-		</tbody>
-	</table>
-	<h2>Regular Expression Operators</h2>
-	<table border="1" frame="box">
-		<thead><tr>
-			<th>Operator</th>
-			<th>Description</th>
-		</tr></thead>
-		<tbody>
-			<tr>
-				<td><code>|</code></td>
-				<td>Alternation. <code>A|B</code> matches either A or B.</td>
-			</tr>
-			<tr>
-				<td><code>*</code></td>
-				<td>Match 0 or more times. Match as many times as possible.</td>
-			</tr>
-			<tr>
-				<td><code>+</code></td>
-				<td>Match 1 or more times. Match as many times as possible.</td>
-			</tr>
-			<tr>
-				<td><code>?</code></td>
-				<td>Match zero or one times. Prefer one.</td>
-			</tr>
-			<tr>
-				<td><code>{n}</code></td>
-				<td>Match exactly n times</td>
-			</tr>
-			<tr>
-				<td><code>{n,}</code></td>
-				<td>Match at least n times. Match as many times as possible.</td>
-			</tr>
-			<tr>
-				<td><code>{n,m}</code></td>
-				<td>Match between n and m times. Match as many times as possible, but not more than m.</td>
-			</tr>
-			<tr>
-				<td><code>*?</code></td>
-				<td>Match 0 or more times. Match as few times as possible.</td>
-			</tr>
-			<tr>
-				<td><code>+?</code></td>
-				<td>Match 1 or more times. Match as few times as possible.</td>
-			</tr>
-			<tr>
-				<td><code>??</code></td>
-				<td>Match zero or one times. Prefer zero.</td>
-			</tr>
-			<tr>
-				<td><code>{n}?</code></td>
-				<td>Match exactly n times.</td>
-			</tr>
-			<tr>
-				<td><code>{n,}?</code></td>
-				<td>Match at least n times, but no more than required for an overall pattern match.</td>
-			</tr>
-			<tr>
-				<td><code>{n,m}?</code></td>
-				<td>Match between n and m times. Match as few times as possible, but not less than n.</td>
-			</tr>
-			<tr>
-				<td><code>*+</code></td>
-				<td>Match 0 or more times. Match as many times as possible when first encountered, do not retry with fewer even if overall match fails (Possessive Match).</td>
-			</tr>
-			<tr>
-				<td><code>++</code></td>
-				<td>Match 1 or more times. Possessive match.</td>
-			</tr>
-			<tr>
-				<td><code>?+</code></td>
-				<td>Match zero or one times. Possessive match.</td>
-			</tr>
-			<tr>
-				<td><code>{n}+</code></td>
-				<td>Match exactly n times.</td>
-			</tr>
-			<tr>
-				<td><code>{n,}+</code></td>
-				<td>Match at least n times. Possessive Match.</td>
-			</tr>
-			<tr>
-				<td><code>{n,m}+</code></td>
-				<td>Match between n and m times. Possessive Match.</td>
-			</tr>
-			<tr>
-				<td><code>(…)</code></td>
-				<td>Capturing parentheses. Range of input that matched the parenthesized subexpression is available after the match.</td>
-			</tr>
-			<tr>
-				<td><code>(?:…)</code></td>
-				<td>Non-capturing parentheses. Groups the included pattern, but does not provide capturing of matching text. Somewhat more efficient than capturing parentheses.</td>
-			</tr>
-			<tr>
-				<td><code>(?&gt;…)</code></td>
-				<td>Atomic-match parentheses. First match of the parenthesized subexpression is the only one tried; if it does not lead to an overall pattern match, back up the search for a match to a position before the <code>(?&gt;</code>.</td>
-			</tr>
-			<tr>
-				<td><code>(?#…)</code></td>
-				<td>Free-format comment.</td>
-			</tr>
-			<tr>
-				<td><code>(?=…)</code></td>
-				<td>Look-ahead assertion. True if the parenthesized pattern matches at the current input position, but does not advance the input position.</td>
-			</tr>
-			<tr>
-				<td><code>(?!…)</code></td>
-				<td>Negative look-ahead assertion. True if the parenthesized pattern does not match at the current input position. Does not advance the input position.</td>
-			</tr>
-			<tr>
-				<td><code>(?&lt;=…)</code></td>
-				<td>Look-behind assertion. True if the parenthesized pattern matches text preceding the current input position, with the last character of the match being the input character just before the current position. Does not alter the input position. The length of possible strings matched by the look-behind pattern must not be unbounded (no * or + operators.)</td>
-			</tr>
-			<tr>
-				<td><code>(?&lt;!…)</code></td>
-				<td>Negative Look-behind assertion. True if the parenthesized pattern does not match text preceding the current input position, with the last character of the match being the input character just before the current position. Does not alter the input position. The length of possible strings matched by the look-behind pattern must not be unbounded (no * or + operators.)</td>
-			</tr>
-			<tr>
-				<td><code>(?&lt;name&gt;…)</code></td>
-				<td>Named capture group. The are literal - they appear in the pattern.</td>
-			</tr>
-			<tr>
-				<td><code>(?ismwx-ismwx:…)</code></td>
-				<td>Flag settings. Evaluate the parenthesized expression with the specified flags enabled or -disabled.</td>
-			</tr>
-			<tr>
-				<td><code>(?ismwx-ismwx)</code></td>
-				<td>Flag settings. Change the flag settings. Changes apply to the portion of the pattern following the setting. For example, <code>(?i)</code> changes to a case insensitive match.</td>
-			</tr>
-		</tbody>
-	</table>
-	<h2>Flag Options</h2>
-	<table border="1" frame="box">
-		<thead><tr>
-			<th>Flag (pattern)</th>
-			<th>Description</th>
-		</tr></thead>
-		<tbody>
-			<tr>
-				<td><code>i</code></td>
-				<td>If set, matching will take place in a case-insensitive manner.</td>
-			</tr>
-			<tr>
-				<td><code>x</code></td>
-				<td>If set, allow use of white space and #comments within patterns.</td>
-			</tr>
-			<tr>
-				<td><code>s</code></td>
-				<td>If set, a “.” in a pattern will match a line terminator in the input text. By default, it will not. Note that a carriage-return / line-feed pair in text behave as a single line terminator, and will match a single “.” in a RE pattern. Line terminators are \u000a, \u000b, \u000c, \u000d, \u0085, \u2028, \u2029 and the sequence \u000d \u000a.</td>
-			</tr>
-			<tr>
-				<td><code>m</code></td>
-				<td>Control the behavior of “^” and “$” in a pattern. By default these will only match at the start and end, respectively, of the input text. If this flag is set, “^” and “$” will also match at the start and end of each line within the input text.</td>
-			</tr>
-			<tr>
-				<td><code>w</code></td>
-				<td>Controls the behavior of \b in a pattern. If set, word boundaries are found according to the definitions of word found in Unicode UAX 29, Text Boundaries. By default, word boundaries are identified by means of a simple classification of characters as either “word” or “non-word”, which approximates traditional regular expression behavior. The results obtained with the two options can be quite different in runs of spaces and other non-word characters.</td>
-			</tr>
-		</tbody>
-	</table>
-	<h2>Find and Replace</h2>
-	<table border="1" frame="box">
-		<thead><tr>
-			<th>Character</th>
-			<th>Descriptions</th>
-		</tr></thead>
-		<tbody>
-			<tr>
-				<td><code>$n</code></td>
-				<td>The text of capture group ‘n’ will be substituted for <code>$n</code>. n must be &gt;= 0 and not greater than the number of capture groups. An unescaped $ in replacement text that is not followed by a capture group specification, either a number or name, is an error.</td>
-			</tr>
-			<tr>
-				<td><code>${name}</code></td>
-				<td>The text of named capture group will be substituted. The name must appear in the pattern.</td>
-			</tr>
-			<tr>
-				<td><code>\</code></td>
-				<td>Treat the following character as a literal, suppressing any special meaning. Backslash escaping in substitution text is only required for ‘$’ and ‘\’, but may be used on any other character without bad effects.</td>
-			</tr>
-		</tbody>
-	</table>
+	<section>
+		<header><h1>Full version made by &amp; for unicode</h1></header>
+		<p>copied from:</p>
+		<ul>
+			<li>ICU regex flavour: <a class="my-ref">https://unicode-org.github.io/icu/userguide/strings/regexp.html</a></li>
+			<li>Unicode technical standard #18: <a class="my-ref">https://www.unicode.org/reports/tr18/</a></li>
+		</ul>
+		<section>
+			<header><h2>Regular Expression Metacharacters</h2></header>
+			<table>
+				<thead><tr>
+					<th>Character</th>
+					<th>Description</th>
+				</tr></thead>
+				<tbody>
+					<tr>
+						<td><code>\a</code></td>
+						<td>Match a BELL <code>\u0007</code>.</td>
+					</tr>
+					<tr>
+						<td><code>\A</code></td>
+						<td>Match at the beginning of the input. Differs from ^ in that <code>\A</code> will not match after a new line within the input.</td>
+					</tr>
+					<tr>
+						<td><code>\b</code></td>
+						<td>Match if the current position is a word boundary. Boundaries occur at the transitions between word (<code>\w</code>) and non-word (<code>\W</code>) characters, with combining marks ignored.</td>
+					</tr>
+					<tr>
+						<td><code>\B</code></td>
+						<td>Match if the current position is not a word boundary.</td>
+					</tr>
+					<tr>
+						<td><code>\c<em>X</em></code></td>
+						<td>Match a control-<em>X</em> character.</td>
+					</tr>
+					<tr>
+						<td><code>\d</code></td>
+						<td>Match any character with the Unicode General Category of Nd (Number, Decimal Digit.)</td>
+					</tr>
+					<tr>
+						<td><code>\D</code></td>
+						<td>Match any character that is not a decimal digit.</td>
+					</tr>
+					<tr>
+						<td><code>\e</code></td>
+						<td>Match an ESCAPE <code>\u001B</code>.</td>
+					</tr>
+					<tr>
+						<td><code>\f</code></td>
+						<td>Match a FORM FEED <code>\u000C</code>.</td>
+					</tr>
+					<tr>
+						<td><code>\G</code></td>
+						<td>Match if the current position is at the end of the previous match.</td>
+					</tr>
+					<tr>
+						<td><code>\h</code></td>
+						<td>Match a Horizontal White Space character. They are characters with Unicode General Category of Space_Separator plus the ASCII tab <code>\u0009</code>.</td>
+					</tr>
+					<tr>
+						<td><code>\H</code></td>
+						<td>Match a non-Horizontal White Space character.</td>
+					</tr>
+					<tr>
+						<td><code>\k&lt;<em>name</em>&gt;</code></td>
+						<td>Named Capture Back Reference.</td>
+					</tr>
+					<tr>
+						<td><code>\n</code></td>
+						<td>Match a LINE FEED <code>\u000A</code>.</td>
+					</tr>
+					<tr>
+						<td><code>\N{<em>UNICODE CHARACTER NAME</em>}</code></td>
+						<td>Match the named character.</td>
+					</tr>
+					<tr>
+						<td><code>\p{<em>UNICODE PROPERTY NAME</em>}</code></td>
+						<td>Match any character with the specified Unicode Property.</td>
+					</tr>
+					<tr>
+						<td><code>\P{<em>UNICODE PROPERTY NAME</em>}</code></td>
+						<td>Match any character not having the specified Unicode Property.</td>
+					</tr>
+					<tr>
+						<td><code>\Q … \E</code></td>
+						<td>Quotes all characters.</td>
+					</tr>
+					<tr>
+						<td><code>\r</code></td>
+						<td>Match a CARRIAGE RETURN <code>\u000D</code>.</td>
+					</tr>
+					<tr>
+						<td><code>\R</code></td>
+						<td>Match a new line character, or the sequence <code>CR LF</code>. The new line characters are <code>\u000a, \u000b, \u000c, \u000d, \u0085, \u2028, \u2029</code>.</td>
+					</tr>
+					<tr>
+						<td><code>\s</code></td>
+						<td>Match a white space character. White space is defined as <code>[\t\n\f\r\p{Z}]</code>.</td>
+					</tr>
+					<tr>
+						<td><code>\S</code></td>
+						<td>Match a non-white space character.</td>
+					</tr>
+					<tr>
+						<td><code>\t</code></td>
+						<td>Match a HORIZONTAL TABULATION <code>\u0009</code>.</td>
+					</tr>
+					<tr>
+						<td><code>\u<em>hhhh</em></code></td>
+						<td>Match the character with the hex value <em>hhhh</em>.</td>
+					</tr>
+					<tr>
+						<td><code>\U<em>hhhhhhhh</em></code></td>
+						<td>Match the character with the hex value <em>hhhhhhhh</em>. Exactly 8 hex digits must be provided, even though the largest Unicode code point is <code>\U0010ffff</code>.</td>
+					</tr>
+					<tr>
+						<td><code>\v</code></td>
+						<td>Match a new line character. The new line characters are <code>\u000a, \u000b, \u000c, \u000d, \u0085, \u2028, \u2029</code>. Does not match the new line sequence <code>CR LF</code>.</td>
+					</tr>
+					<tr>
+						<td><code>\V</code></td>
+						<td>Match a non-new line character.</td>
+					</tr>
+					<tr>
+						<td><code>\w</code></td>
+						<td>Match a word character. Word characters are <code>[\p{Alphabetic}\p{Mark}\p{Decimal_Number}\p{Connector_Punctuation}\u200c\u200d]</code>.</td>
+					</tr>
+					<tr>
+						<td><code>\W</code></td>
+						<td>Match a non-word character.</td>
+					</tr>
+					<tr>
+						<td><code>\x{<em>hhhh</em>}</code></td>
+						<td>Match the character with hex value <em>hhhh</em>. From 1 to 6 hex digits may be supplied.</td>
+					</tr>
+					<tr>
+						<td><code>\x<em>hh</em></code></td>
+						<td>Match the character with two digit hex value <em>hh</em>.</td>
+					</tr>
+					<tr>
+						<td><code>\X</code></td>
+						<td>Match a Grapheme Cluster.</td>
+					</tr>
+					<tr>
+						<td><code>\Z</code></td>
+						<td>Match if the current position is at the end of input, but before the final line terminator, if one exists.</td>
+					</tr>
+					<tr>
+						<td><code>\z</code></td>
+						<td>Match if the current position is at the end of input.</td>
+					</tr>
+					<tr>
+						<td><code>\<em>n</em></code></td>
+						<td>Back Reference. Match whatever the nth capturing group matched. <em>n</em> must be a number &gt; 1 and &lt; total number of capture groups in the pattern.</td>
+					</tr>
+					<tr>
+						<td><code>\0<em>ooo</em></code></td>
+						<td>Match an Octal character. ‘ooo’ is from one to three octal digits. 0377 is the largest allowed Octal character. The leading zero is required; it distinguishes Octal constants from back references.</td>
+					</tr>
+					<tr>
+						<td><code>[<em>pattern</em>]</code></td>
+						<td>Match any one character from the set.</td>
+					</tr>
+					<tr>
+						<td><code>.</code></td>
+						<td>Match any character.</td>
+					</tr>
+					<tr>
+						<td><code>^</code></td>
+						<td>Match at the beginning of a line.</td>
+					</tr>
+					<tr>
+						<td><code>$</code></td>
+						<td>Match at the end of a line. Line terminating characters are <code>\u000a, \u000b, \u000c, \u000d, \u0085, \u2028, \u2029</code> and the sequence <code>\u000d \u000a</code>.</td>
+					</tr>
+					<tr>
+						<td><code>\</code></td>
+						<td>Quotes the following character. Characters that must be quoted to be treated as literals are <code>* ? + [ ( ) { } ^ $ | \ .</code></td>
+					</tr>
+				</tbody>
+			</table>
+		</section>
+		<section>
+			<header><h2>Regular Expression Operators</h2></header>
+			<table>
+				<thead><tr>
+					<th>Operator</th>
+					<th>Description</th>
+				</tr></thead>
+				<tbody>
+					<tr>
+						<td><code>|</code></td>
+						<td>Alternation. <code>A|B</code> matches either A or B.</td>
+					</tr>
+					<tr>
+						<td><code>*</code></td>
+						<td>Match 0 or more times. Match as many times as possible.</td>
+					</tr>
+					<tr>
+						<td><code>+</code></td>
+						<td>Match 1 or more times. Match as many times as possible.</td>
+					</tr>
+					<tr>
+						<td><code>?</code></td>
+						<td>Match zero or one times. Prefer one.</td>
+					</tr>
+					<tr>
+						<td><code>{n}</code></td>
+						<td>Match exactly n times</td>
+					</tr>
+					<tr>
+						<td><code>{n,}</code></td>
+						<td>Match at least n times. Match as many times as possible.</td>
+					</tr>
+					<tr>
+						<td><code>{n,m}</code></td>
+						<td>Match between n and m times. Match as many times as possible, but not more than m.</td>
+					</tr>
+					<tr>
+						<td><code>*?</code></td>
+						<td>Match 0 or more times. Match as few times as possible.</td>
+					</tr>
+					<tr>
+						<td><code>+?</code></td>
+						<td>Match 1 or more times. Match as few times as possible.</td>
+					</tr>
+					<tr>
+						<td><code>??</code></td>
+						<td>Match zero or one times. Prefer zero.</td>
+					</tr>
+					<tr>
+						<td><code>{n}?</code></td>
+						<td>Match exactly n times.</td>
+					</tr>
+					<tr>
+						<td><code>{n,}?</code></td>
+						<td>Match at least n times, but no more than required for an overall pattern match.</td>
+					</tr>
+					<tr>
+						<td><code>{n,m}?</code></td>
+						<td>Match between n and m times. Match as few times as possible, but not less than n.</td>
+					</tr>
+					<tr>
+						<td><code>*+</code></td>
+						<td>Match 0 or more times. Match as many times as possible when first encountered, do not retry with fewer even if overall match fails (Possessive Match).</td>
+					</tr>
+					<tr>
+						<td><code>++</code></td>
+						<td>Match 1 or more times. Possessive match.</td>
+					</tr>
+					<tr>
+						<td><code>?+</code></td>
+						<td>Match zero or one times. Possessive match.</td>
+					</tr>
+					<tr>
+						<td><code>{n}+</code></td>
+						<td>Match exactly n times.</td>
+					</tr>
+					<tr>
+						<td><code>{n,}+</code></td>
+						<td>Match at least n times. Possessive Match.</td>
+					</tr>
+					<tr>
+						<td><code>{n,m}+</code></td>
+						<td>Match between n and m times. Possessive Match.</td>
+					</tr>
+					<tr>
+						<td><code>(…)</code></td>
+						<td>Capturing parentheses. Range of input that matched the parenthesized subexpression is available after the match.</td>
+					</tr>
+					<tr>
+						<td><code>(?:…)</code></td>
+						<td>Non-capturing parentheses. Groups the included pattern, but does not provide capturing of matching text. Somewhat more efficient than capturing parentheses.</td>
+					</tr>
+					<tr>
+						<td><code>(?&gt;…)</code></td>
+						<td>Atomic-match parentheses. First match of the parenthesized subexpression is the only one tried; if it does not lead to an overall pattern match, back up the search for a match to a position before the <code>(?&gt;</code>.</td>
+					</tr>
+					<tr>
+						<td><code>(?#…)</code></td>
+						<td>Free-format comment.</td>
+					</tr>
+					<tr>
+						<td><code>(?=…)</code></td>
+						<td>Look-ahead assertion. True if the parenthesized pattern matches at the current input position, but does not advance the input position.</td>
+					</tr>
+					<tr>
+						<td><code>(?!…)</code></td>
+						<td>Negative look-ahead assertion. True if the parenthesized pattern does not match at the current input position. Does not advance the input position.</td>
+					</tr>
+					<tr>
+						<td><code>(?&lt;=…)</code></td>
+						<td>Look-behind assertion. True if the parenthesized pattern matches text preceding the current input position, with the last character of the match being the input character just before the current position. Does not alter the input position. The length of possible strings matched by the look-behind pattern must not be unbounded (no * or + operators.)</td>
+					</tr>
+					<tr>
+						<td><code>(?&lt;!…)</code></td>
+						<td>Negative Look-behind assertion. True if the parenthesized pattern does not match text preceding the current input position, with the last character of the match being the input character just before the current position. Does not alter the input position. The length of possible strings matched by the look-behind pattern must not be unbounded (no * or + operators.)</td>
+					</tr>
+					<tr>
+						<td><code>(?&lt;name&gt;…)</code></td>
+						<td>Named capture group. The are literal - they appear in the pattern.</td>
+					</tr>
+					<tr>
+						<td><code>(?ismwx-ismwx:…)</code></td>
+						<td>Flag settings. Evaluate the parenthesized expression with the specified flags enabled or -disabled.</td>
+					</tr>
+					<tr>
+						<td><code>(?ismwx-ismwx)</code></td>
+						<td>Flag settings. Change the flag settings. Changes apply to the portion of the pattern following the setting. For example, <code>(?i)</code> changes to a case insensitive match.</td>
+					</tr>
+				</tbody>
+			</table>
+		</section>
+		<section>
+			<header><h2>Flag Options</h2></header>
+			<table>
+				<thead><tr>
+					<th>Flag (pattern)</th>
+					<th>Description</th>
+				</tr></thead>
+				<tbody>
+					<tr>
+						<td><code>i</code></td>
+						<td>If set, matching will take place in a case-insensitive manner.</td>
+					</tr>
+					<tr>
+						<td><code>x</code></td>
+						<td>If set, allow use of white space and #comments within patterns.</td>
+					</tr>
+					<tr>
+						<td><code>s</code></td>
+						<td>If set, a “.” in a pattern will match a line terminator in the input text. By default, it will not. Note that a carriage-return / line-feed pair in text behave as a single line terminator, and will match a single “.” in a RE pattern. Line terminators are \u000a, \u000b, \u000c, \u000d, \u0085, \u2028, \u2029 and the sequence \u000d \u000a.</td>
+					</tr>
+					<tr>
+						<td><code>m</code></td>
+						<td>Control the behavior of “^” and “$” in a pattern. By default these will only match at the start and end, respectively, of the input text. If this flag is set, “^” and “$” will also match at the start and end of each line within the input text.</td>
+					</tr>
+					<tr>
+						<td><code>w</code></td>
+						<td>Controls the behavior of \b in a pattern. If set, word boundaries are found according to the definitions of word found in Unicode UAX 29, Text Boundaries. By default, word boundaries are identified by means of a simple classification of characters as either “word” or “non-word”, which approximates traditional regular expression behavior. The results obtained with the two options can be quite different in runs of spaces and other non-word characters.</td>
+					</tr>
+				</tbody>
+			</table>
+		</section>
+		<section>
+			<header><h2>Find and Replace</h2></header>
+			<table>
+				<thead><tr>
+					<th>Character</th>
+					<th>Descriptions</th>
+				</tr></thead>
+				<tbody>
+					<tr>
+						<td><code>$n</code></td>
+						<td>The text of capture group ‘n’ will be substituted for <code>$n</code>. n must be &gt;= 0 and not greater than the number of capture groups. An unescaped $ in replacement text that is not followed by a capture group specification, either a number or name, is an error.</td>
+					</tr>
+					<tr>
+						<td><code>${name}</code></td>
+						<td>The text of named capture group will be substituted. The name must appear in the pattern.</td>
+					</tr>
+					<tr>
+						<td><code>\</code></td>
+						<td>Treat the following character as a literal, suppressing any special meaning. Backslash escaping in substitution text is only required for ‘$’ and ‘\’, but may be used on any other character without bad effects.</td>
+					</tr>
+				</tbody>
+			</table>
+		</section>
+		<section>
+			<header><h2>Set Expressions (Character Classes)</h2></header>
+			<table>
+				<thead><tr>
+					<th>Example</th>
+					<th>Description</th>
+				</tr></thead>
+				<tbody>
+					<tr>
+						<td><code>[abc]</code></td>
+						<td>Match any of the characters a, b or c.</td>
+					</tr>
+					<tr>
+						<td><code>[^abc]</code></td>
+						<td>Negation - match any character except a, b or c.</td>
+					</tr>
+					<tr>
+						<td><code>[A-M]</code></td>
+						<td>Range - match any character from A to M. The characters to include are determined by Unicode code point ordering.</td>
+					</tr>
+					<tr>
+						<td><code>[\u0000-\U0010ffff]</code></td>
+						<td>Range - match all characters.</td>
+					</tr>
+					<tr>
+						<td><code>[\p{L}]<br />[\p{Letter}]<br />[\p{General_Category=Letter}]</code></td>
+						<td>Characters with Unicode Category = Letter. All forms shown are equivalent.</td>
+					</tr>
+					<tr>
+						<td><code>[\P{Letter}]</code></td>
+						<td>Negated property. (Upper case \P) Match everything except Letters.</td>
+					</tr>
+					<tr>
+						<td><code>[\p{numeric_value=9}]</code></td>
+						<td>Match all numbers with a numeric value of 9. Any Unicode Property may be used in set expressions.</td>
+					</tr>
+					<tr>
+						<td><code>[[a-z][A-Z][0-9]]<br />[a-zA-Z0-9]<br />[a-z||A-Z||0-9]</code></td>
+						<td>Logical OR or Union of Sets. The examples match ASCII letters and digits. The two forms are equivalent.</td>
+					</tr>
+					<tr>
+						<td><code>[\p{Letter}&amp;&amp;\p{script=cyrillic}]</code></td>
+						<td>Logical AND or intersection. Match the set of all Cyrillic letters.</td>
+					</tr>
+					<tr>
+						<td><code>[\p{Letter}--\p{script=latin}]</code></td>
+						<td>Subtraction. Match all non-Latin letters.</td>
+					</tr>
+					<tr>
+						<td><code>[\p{letter}~~\p{ascii}]</code></td>
+						<td>Logical XOR or symmetric difference. Match either letter or ascii, but not both</td>
+					</tr>
+				</tbody>
+			</table>
+		</section>
+		<section>
+			<header><h2>UnicodeSet Patterns</h2></header>
+			<table>
+				<thead><tr>
+					<th>&nbsp;</th>
+					<th>Positive</th>
+					<th>Negative</th>
+				</tr></thead>
+				<tbody>
+					<tr>
+						<td>POSIX-style Syntax</td>
+						<td><code>[:type=value:]</code></td>
+						<td><code>[:^type=value:]</code></td>
+					</tr>
+					<tr>
+						<td>Perl-style Syntax</td>
+						<td><code>\p{type=value}</code></td>
+						<td><code>\P{type=value}</code></td>
+					</tr>
+				</tbody>
+			</table>
+			<br />
+			<table><tbody>
+				<tr>
+					<td><strong>L</strong></td>
+					<td><strong>Letter</strong></td>
+				</tr>
+				<tr>
+					<td>Lu</td>
+					<td>Uppercase Letter</td>
+				</tr>
+				<tr>
+					<td>Ll</td>
+					<td>Lowercase Letter</td>
+				</tr>
+				<tr>
+					<td>Lt</td>
+					<td>Titlecase Letter</td>
+				</tr>
+				<tr>
+					<td>Lm</td>
+					<td>Modifier Letter</td>
+				</tr>
+				<tr>
+					<td>Lo</td>
+					<td>Other Letter</td>
+				</tr>
+				<tr>
+					<td><strong>M</strong></td>
+					<td><strong>Mark</strong></td>
+				</tr>
+				<tr>
+					<td>Mn</td>
+					<td>Non-Spacing Mark</td>
+				</tr>
+				<tr>
+					<td>Mc</td>
+					<td>Spacing Combining Mark</td>
+				</tr>
+				<tr>
+					<td>Me</td>
+					<td>Enclosing Mark</td>
+				</tr>
+				<tr>
+					<td><strong>N</strong></td>
+					<td><strong>Number</strong></td>
+				</tr>
+				<tr>
+					<td>Nd</td>
+					<td>Decimal Digit Number</td>
+				</tr>
+				<tr>
+					<td>Nl</td>
+					<td>Letter Number</td>
+				</tr>
+				<tr>
+					<td>No</td>
+					<td>Other Number</td>
+				</tr>
+				<tr>
+					<td><strong>S</strong></td>
+					<td><strong>Symbol</strong></td>
+				</tr>
+				<tr>
+					<td>Sm</td>
+					<td>Math Symbol</td>
+				</tr>
+				<tr>
+					<td>Sc</td>
+					<td>Currency Symbol</td>
+				</tr>
+				<tr>
+					<td>Sk</td>
+					<td>Modifier Symbol</td>
+				</tr>
+				<tr>
+					<td>So</td>
+					<td>Other Symbol</td>
+				</tr>
+				<tr>
+					<td><strong>P</strong></td>
+					<td><strong>Punctuation</strong></td>
+				</tr>
+				<tr>
+					<td>Pc</td>
+					<td>Connector Punctuation</td>
+				</tr>
+				<tr>
+					<td>Pd</td>
+					<td>Dash Punctuation</td>
+				</tr>
+				<tr>
+					<td>Ps</td>
+					<td>Open Punctuation</td>
+				</tr>
+				<tr>
+					<td>Pe</td>
+					<td>Close Punctuation</td>
+				</tr>
+				<tr>
+					<td>Pi</td>
+					<td>Initial Punctuation</td>
+				</tr>
+				<tr>
+					<td>Pf</td>
+					<td>Final Punctuation</td>
+				</tr>
+				<tr>
+					<td>Po</td>
+					<td>Other Punctuation</td>
+				</tr>
+				<tr>
+					<td><strong>Z</strong></td>
+					<td><strong>Separator</strong></td>
+				</tr>
+				<tr>
+					<td>Zs</td>
+					<td>Space Separator</td>
+				</tr>
+				<tr>
+					<td>Zl</td>
+					<td>Line Separator</td>
+				</tr>
+				<tr>
+					<td>Zp</td>
+					<td>Paragraph Separator</td>
+				</tr>
+				<tr>
+					<td><strong>C</strong></td>
+					<td><strong>Other</strong></td>
+				</tr>
+				<tr>
+					<td>Cc</td>
+					<td>Control</td>
+				</tr>
+				<tr>
+					<td>Cf</td>
+					<td>Format</td>
+				</tr>
+				<tr>
+					<td>Cs</td>
+					<td>Surrogate</td>
+				</tr>
+				<tr>
+					<td>Co</td>
+					<td>Private Use</td>
+				</tr>
+				<tr>
+					<td>Cn</td>
+					<td>Unassigned</td>
+				</tr>
+				<tr>
+					<td>-</td>
+					<td>Any*</td>
+				</tr>
+				<tr>
+					<td>-</td>
+					<td>Assigned*</td>
+				</tr>
+				<tr>
+					<td>-</td>
+					<td>ASCII*</td>
+				</tr>
+			</tbody></table>
+		</section>
+	</section>
 </body>

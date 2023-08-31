@@ -3,722 +3,741 @@
 <head>
 	<title>sprintf & strftime</title>
 	<meta name="author" content="PTA" />
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
 	<style>
 		table {border-collapse: collapse;}
-		th {font-size: 2vh; padding: 5px;}
-		td {padding: 5px;}
+		thead {background-color: #efefef;}
+		th, td {border-style: solid; border-width: thin; padding: 5px;}
+		th {font-size: 2vh;}
 		h1 {text-align: center;}
 		hr {border-top: 1px dotted red;}
 	</style>
-	<meta charset="UTF-8" />
-	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<script>
+		window.onload = (event) => {
+			for (let element of document.querySelectorAll("a.my-ref")) {
+				element.setAttribute("href", element.textContent);
+				element.setAttribute("target", "_blank");
+				element.setAttribute("rel", "noreferrer");
+			}
+			console.log("done: auto-clickable url");
+		};
+	</script>
 </head>
 <body>
-	<h1><code>printf</code></h1>
-	<p>Ref: <a target="_blank" rel="noreferrer" href="https://cplusplus.com/reference/cstdio/printf/">c++ ref</a></p>
-	<p>syntax: <code>%[flags][width][.precision][length]specifier</code></p>
-	<table border="1" frame="box">
-		<thead>
-			<tr>
-				<th><em>specifier</em></th>
-				<th>Output</th>
-				<th>Example</th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr>
-				<td><code>%d</code><br /><code>%i</code></td>
-				<td>Signed decimal integer</td>
-				<td><code>392</code></td>
-			</tr>
-			<tr>
-				<td><code>%u</code></td>
-				<td>Unsigned decimal integer</td>
-				<td><code>7235</code></td>
-			</tr>
-			<tr>
-				<td><code>%o</code></td>
-				<td>Unsigned octal</td>
-				<td><code>610</code></td>
-			</tr>
-			<tr>
-				<td><code>%x</code><br /><code>%X</code></td>
-				<td>Unsigned hexadecimal integer</td>
-				<td><code>7fa<br />7FA</code></td>
-			</tr>
-			<tr>
-				<td><code>%f</code><br /><code>%F</code></td>
-				<td>Decimal floating point</td>
-				<td><code>392.65</code></td>
-			</tr>
-			<tr>
-				<td><code>%e</code><br /><code>%E</code></td>
-				<td>Scientific notation (mantissa/exponent)</td>
-				<td><code>3.9265e+2</code><br /><code>3.9265E+2</code></td>
-			</tr>
-			<tr>
-				<td><code>%g</code><br /><code>%G</code></td>
-				<td>Use the shortest representation: <code>%e</code> vs <code>%f</code></td>
-				<td><code>392.65</code></td>
-			</tr>
-			<tr>
-				<td><code>%a</code><br /><code>%A</code></td>
-				<td>Hexadecimal floating point</td>
-				<td><code>-0xc.90fep-2</code></td>
-			</tr>
-			<tr>
-				<td><code>%c</code></td>
-				<td>Character</td>
-				<td><code>a</code></td>
-			</tr>
-			<tr>
-				<td><code>%s</code></td>
-				<td>String of characters</td>
-				<td><code>sample</code></td>
-			</tr>
-			<tr>
-				<td><code>%p</code></td>
-				<td>Pointer address</td>
-				<td><code>b8000000</code></td>
-			</tr>
-			<tr>
-				<td><code>%n</code></td>
-				<td>Nothing printed.<br/> The corresponding argument must be a pointer to a <code>signed int</code>.<br/> The number of characters written so far is stored in the pointed location.</td>
-				<td> </td>
-			</tr>
-			<tr>
-				<td><code>%%</code></td>
-				<td>A <code>%</code> followed by another <code>%</code> character will write a single <code>%</code> to the stream.</td>
-				<td><code>%</code></td>
-			</tr>
-		</tbody>
-	</table>
-	<br />
-	<table border="1" frame="box">
-		<thead>
-			<tr>
-			<th>example code</th>
-			<th>example output</th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr>
-				<td><code>printf("Characters: %c %c \n", 'a', 65);</code></td>
-				<td><code>Characters: a A</code></td>
-			</tr>
-			<tr>
-				<td><code>printf("Decimals: %d %ld\n", 1977, 650000L);</code></td>
-				<td><code>Decimals: 1977 650000</code></td>
-			</tr>
-			<tr>
-				<td><code>printf("Preceding with blanks: %10d \n", 1977);</code></td>
-				<td><code>Preceding with blanks:       1977</code></td>
-			</tr>
-			<tr>
-				<td><code>printf("Preceding with zeros: %010d \n", 1977);</code></td>
-				<td><code>Preceding with zeros: 0000001977</code></td>
-			</tr>
-			<tr>
-				<td><code>printf("Some different radices: %d %x %o %#x %#o \n", 100, 100, 100, 100, 100);</code></td>
-				<td><code>Some different radices: 100 64 144 0x64 0144</code></td>
-			</tr>
-			<tr>
-				<td><code>printf("floats: %4.2f %+.0e %E \n", 3.1416, 3.1416, 3.1416);</code></td>
-				<td><code>floats: 3.14 +3e+000 3.141600E+000</code></td>
-			</tr>
-			<tr>
-				<td><code>printf("Width trick: %*d \n", 5, 10);</code></td>
-				<td><code>Width trick:    10</code></td>
-			</tr>
-			<tr>
-				<td><code>printf("%s \n", "A string");</code></td>
-				<td><code>A string</code></td>
-			</tr>
-		</tbody>
-	</table>
-	<br />
-	<table border="1" frame="box">
-		<thead>
-			<tr>
-				<th><em>flags</em></th>
-				<th>description</th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr>
-				<td><code>-</code></td>
-				<td>Left-justify within the given field width; Right justification is the default (see <em>width</em> sub-specifier).</td>
-			</tr>
-			<tr>
-				<td><code>+</code></td>
-				<td>Forces to preceed the result with a plus or minus sign (<code>+</code> or <code>-</code>) even for positive numbers. By default, only negative numbers are preceded with a <code>-</code> sign.</td>
-			</tr>
-			<tr>
-				<td><em>(space)</em></td>
-				<td>If no sign is going to be written, a blank space is inserted before the value.</td>
-			</tr>
-			<tr>
-				<td><code>#</code></td>
-				<td>
-					Used with <code>o</code>, <code>x</code> or <code>X</code> specifiers the value is preceeded with <code>0</code>, <code>0x</code> or <code>0X</code> respectively for values different than zero.<br/>
-					Used with <code>a, A, e, E, f, F, g, G</code> it forces the written output to contain a decimal point even if no more digits follow. By default, if no digits follow, no decimal point is written.
-				</td>
-			</tr>
-			<tr>
-				<td><code>0</code></td>
-				<td>Left-pads the number with zeroes (<code>0</code>) instead of spaces when padding is specified (see <em>width</em> sub-specifier).</td>
-			</tr>
-		</tbody>
-	</table>
-	<br />
-	<table border="1" frame="box">
-		<thead>
-			<tr>
-				<th><em>width</em></th>
-				<th>description</th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr>
-				<td><em>(number)</em></td>
-				<td>Minimum number of characters to be printed. If the value to be printed is shorter than this number, the result is padded with blank spaces. The value is not truncated even if the result is larger.</td>
-			</tr>
-			<tr>
-				<td><code>*</code></td>
-				<td>The <em>width</em> is not specified in the <em>format</em> string, but as an additional integer value argument preceding the argument that has to be formatted.</td>
-			</tr>
-		</tbody>
-	</table>
-	<br />
-	<table border="1" frame="box">
-		<thead>
-			<tr>
-				<th><em>.precision</em></th>
-				<th>description</th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr>
-				<td><code>.</code><em>number</em></td>
-				<td>
-					For integer specifiers (<code>d, i, o, u, x, X</code>): <em>precision</em> specifies the minimum number of digits to be written.
-					If the value to be written is shorter than this number, the result is padded with leading zeros. The value is not truncated even if the result is longer.
-					A <em>precision</em> of <code>0</code> means that no character is written for the value <code>0</code>.<br/>
-					For <code>a, A, e, E, f, F</code> specifiers: this is the number of digits to be printed <strong>after</strong> the decimal point (by default, this is 6).<br/>
-					For <code>g</code> and <code>G</code> specifiers: This is the maximum number of significant digits to be printed.<br/>
-					For <code>s</code>: this is the maximum number of characters to be printed. By default all characters are printed until the ending null character is encountered.<br/>
-					If the period is specified without an explicit value for <em>precision</em>, <code>0</code> is assumed.</td>
-			</tr>
-			<tr>
-				<td><code>.*</code></td>
-				<td>The <em>precision</em> is not specified in the <em>format</em> string, but as an additional integer value argument preceding the argument that has to be formatted.</td>
-			</tr>
-		</tbody>
-	</table>
-	<br />
-	<hr />
-	<h1><code>strftime</code></h1>
-	<p>Ref: <a target="_blank" rel="noreferrer" href="https://cplusplus.com/reference/ctime/strftime/">c++ ref</a></p>
-	<table border="1" frame="box">
-		<thead>
-			<tr>
-				<th>Field type</th>
-				<th>specifier</th>
-				<th>Replaced by</th>
-				<th>Example</th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr>
-				<td rowspan="5">year</td>
-				<td><code>%C</code></td>
-				<td>Year divided by 100 and truncated to integer (<code>00-99</code>)</td>
-				<td><code>20</code></td>
-			</tr>
-			<tr>
-				<td><code>%g</code></td>
-				<td>Week-based year, last two digits (<code>00-99</code>)</td>
-				<td><code>01</code></td>
-			</tr>
-			<tr>
-				<td><code>%G</code></td>
-				<td>Week-based year</td>
-				<td><code>2001</code></td>
-			</tr>
-			<tr>
-				<td><code>%y</code></td>
-				<td>Year, last two digits (<code>00-99</code>)</td>
-				<td><code>01</code></td>
-			</tr>
-			<tr>
-				<td><code>%Y</code></td>
-				<td>Year</td>
-				<td><code>2001</code></td>
-			</tr>
-			<tr>
-				<td rowspan="4">month</td>
-				<td><code>%b</code></td>
-				<td>Abbreviated month name</td>
-				<td><code>Aug</code></td>
-			</tr>
-			<tr>
-				<td><code>%B</code></td>
-				<td>Full month name *</td>
-				<td><code>August</code></td>
-			</tr>
-			<tr>
-				<td><code>%h</code></td>
-				<td>Abbreviated month name (same as <code>%b</code>)</td>
-				<td><code>Aug</code></td>
-			</tr>
-			<tr>
-				<td><code>%m</code></td>
-				<td>Month as a decimal number (<code>01-12</code>)</td>
-				<td><code>08</code></td>
-			</tr>
-			<tr>
-				<td rowspan="3">week</td>
-				<td><code>%U</code></td>
-				<td>Week number with the first Sunday as the first day of week one (<code>00-53</code>)</td>
-				<td><code>33</code></td>
-			</tr>
-			<tr>
-				<td><code>%V</code></td>
-				<td>ISO 8601 week number (<code>01-53</code>)</td>
-				<td><code>34</code></td>
-			</tr>
-			<tr>
-				<td><code>%W</code></td>
-				<td>Week number with the first Monday as the first day of week one (<code>00-53</code>)</td>
-				<td><code>34</code></td>
-			</tr>
-			<tr>
-				<td rowspan="7">day</td>
-				<td><code>%d</code></td>
-				<td>Day of the month, zero-padded (<code>01-31</code>)</td>
-				<td><code>23</code></td>
-			</tr>
-			<tr>
-				<td><code>%e</code></td>
-				<td>Day of the month, space-padded (<code> 1-31</code>)</td>
-				<td><code>23</code></td>
-			</tr>
-			<tr>
-				<td><code>%j</code></td>
-				<td>Day of the year (<code>001-366</code>)</td>
-				<td><code>235</code></td>
-			</tr>
-			<tr>
-				<td><code>%a</code></td>
-				<td>Abbreviated weekday name</td>
-				<td><code>Thu</code></td>
-			</tr>
-			<tr>
-				<td><code>%A</code></td>
-				<td>Full weekday name</td>
-				<td><code>Thursday</code></td>
-			</tr>
-			<tr>
-				<td><code>%u</code></td>
-				<td>ISO 8601 weekday as number with Monday as <code>1</code> (<code>1-7</code>)</td>
-				<td><code>4</code></td>
-			</tr>
-			<tr>
-				<td><code>%w</code></td>
-				<td>Weekday as a decimal number with Sunday as <code>0</code> (<code>0-6</code>)</td>
-				<td><code>4</code></td>
-			</tr>
-			<tr>
-				<td>period</td>
-				<td><code>%p</code></td>
-				<td>AM or PM designation</td>
-				<td><code>PM</code></td>
-			</tr>
-			<tr>
-				<td rowspan="4">hour</td>
-				<td><code>%H</code></td>
-				<td>Hour in 24h format (<code>00-23</code>)</td>
-				<td><code>14</code></td>
-			</tr>
-			<tr>
-				<td><code>%I</code></td>
-				<td>Hour in 12h format (<code>01-12</code>)</td>
-				<td><code>02</code></td>
-			</tr>
-			<tr>
-				<td><code>%r</code></td>
-				<td>12-hour clock time</td>
-				<td><code>02:55:02 pm</code></td>
-			</tr>
-			<tr>
-				<td><code>%R</code></td>
-				<td>24-hour <code>HH:MM</code> time, equivalent to <code>%H:%M</code></td>
-				<td><code>14:55</code></td>
-			</tr>
-			<tr>
-				<td>minute</td>
-				<td><code>%M</code></td>
-				<td>Minute (<code>00-59</code>)</td>
-				<td><code>55</code></td>
-			</tr>
-			<tr>
-				<td>second</td>
-				<td><code>%S</code></td>
-				<td>Second (<code>00-61</code>)</td>
-				<td><code>02</code></td>
-			</tr>
-			<tr>
-				<td rowspan="2">time zone</td>
-				<td><code>%z</code></td>
-				<td>ISO 8601 offset from UTC in timezone (1 minute=1, 1 hour=100)<br /> If timezone cannot be determined, no characters</td>
-				<td><code>+100</code></td>
-			</tr>
-			<tr>
-				<td><code>%Z</code></td>
-				<td>Timezone name or abbreviation<br /> If timezone cannot be determined, no characters</td>
-				<td><code>CDT</code></td>
-			</tr>
-			<tr>
-				<td rowspan="6">shortcut</td>
-				<td><code>%c</code></td>
-				<td>Date and time representation</td>
-				<td><code>Thu Aug 23 14:55:02 2001</code></td>
-			</tr>
-			<tr>
-				<td><code>%D</code></td>
-				<td>Short <code>MM/DD/YY</code> date, equivalent to <code>%m/%d/%y</code></td>
-				<td><code>08/23/01</code></td>
-			</tr>
-			<tr>
-				<td><code>%F</code></td>
-				<td>Short <code>YYYY-MM-DD</code> date, equivalent to <code>%Y-%m-%d</code></td>
-				<td><code>2001-08-23</code></td>
-			</tr>
-			<tr>
-				<td><code>%T</code></td>
-				<td>ISO 8601 time format (<code>HH:MM:SS</code>), equivalent to <code>%H:%M:%S</code></td>
-				<td><code>14:55:02</code></td>
-			</tr>
-			<tr>
-				<td><code>%x</code></td>
-				<td>Date representation</td>
-				<td><code>08/23/01</code></td>
-			</tr>
-			<tr>
-				<td><code>%X</code></td>
-				<td>Time representation</td>
-				<td><code>14:55:02</code></td>
-			</tr>
-			<tr>
-				<td rowspan="5">misc</td>
-				<td><code>%n</code></td>
-				<td>New-line character (<code>'\n'</code>)</td>
-				<td>&nbsp;</td>
-			</tr>
-			<tr>
-				<td><code>%t</code></td>
-				<td>Horizontal-tab character (<code>'\t'</code>)</td>
-				<td>&nbsp;</td>
-			</tr>
-			<tr>
-				<td><code>%%</code></td>
-				<td>A <code>%</code> sign</td>
-				<td><code>%</code></td>
-			</tr>
-			<tr>
-				<td><code>E</code></td>
-				<td>Uses the locale's alternative representation.<br />Applied to <code>%Ec %EC %Ex %EX %Ey %EY</code></td>
-			</tr>
-			<tr>
-				<td><code>O</code></td>
-				<td>Uses the locale's alternative numeric symbols.<br />Applied to <code>%Od %Oe %OH %OI %Om %OM %OS %Ou %OU %OV %Ow %OW %Oy</code></td>
-			</tr>
-		</tbody>
-	</table>
+	<section>
+		<header><h1><code>printf</code></h1></header>
+		<p>copied from: <a class="my-ref">https://cplusplus.com/reference/cstdio/printf/</a></p>
+		<p>syntax: <code>%[flags][width][.precision][length]specifier</code></p>
+		<table>
+			<thead>
+				<tr>
+					<th><em>specifier</em></th>
+					<th>Output</th>
+					<th>Example</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td><code>%d</code><br /><code>%i</code></td>
+					<td>Signed decimal integer</td>
+					<td><code>392</code></td>
+				</tr>
+				<tr>
+					<td><code>%u</code></td>
+					<td>Unsigned decimal integer</td>
+					<td><code>7235</code></td>
+				</tr>
+				<tr>
+					<td><code>%o</code></td>
+					<td>Unsigned octal</td>
+					<td><code>610</code></td>
+				</tr>
+				<tr>
+					<td><code>%x</code><br /><code>%X</code></td>
+					<td>Unsigned hexadecimal integer</td>
+					<td><code>7fa<br />7FA</code></td>
+				</tr>
+				<tr>
+					<td><code>%f</code><br /><code>%F</code></td>
+					<td>Decimal floating point</td>
+					<td><code>392.65</code></td>
+				</tr>
+				<tr>
+					<td><code>%e</code><br /><code>%E</code></td>
+					<td>Scientific notation (mantissa/exponent)</td>
+					<td><code>3.9265e+2</code><br /><code>3.9265E+2</code></td>
+				</tr>
+				<tr>
+					<td><code>%g</code><br /><code>%G</code></td>
+					<td>Use the shortest representation: <code>%e</code> vs <code>%f</code></td>
+					<td><code>392.65</code></td>
+				</tr>
+				<tr>
+					<td><code>%a</code><br /><code>%A</code></td>
+					<td>Hexadecimal floating point</td>
+					<td><code>-0xc.90fep-2</code></td>
+				</tr>
+				<tr>
+					<td><code>%c</code></td>
+					<td>Character</td>
+					<td><code>a</code></td>
+				</tr>
+				<tr>
+					<td><code>%s</code></td>
+					<td>String of characters</td>
+					<td><code>sample</code></td>
+				</tr>
+				<tr>
+					<td><code>%p</code></td>
+					<td>Pointer address</td>
+					<td><code>b8000000</code></td>
+				</tr>
+				<tr>
+					<td><code>%n</code></td>
+					<td>Nothing printed.<br/> The corresponding argument must be a pointer to a <code>signed int</code>.<br/> The number of characters written so far is stored in the pointed location.</td>
+					<td> </td>
+				</tr>
+				<tr>
+					<td><code>%%</code></td>
+					<td>A <code>%</code> followed by another <code>%</code> character will write a single <code>%</code> to the stream.</td>
+					<td><code>%</code></td>
+				</tr>
+			</tbody>
+		</table>
+		<br />
+		<table>
+			<thead>
+				<tr>
+				<th>example code</th>
+				<th>example output</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td><code>printf("Characters: %c %c \n", 'a', 65);</code></td>
+					<td><code>Characters: a A</code></td>
+				</tr>
+				<tr>
+					<td><code>printf("Decimals: %d %ld\n", 1977, 650000L);</code></td>
+					<td><code>Decimals: 1977 650000</code></td>
+				</tr>
+				<tr>
+					<td><code>printf("Preceding with blanks: %10d \n", 1977);</code></td>
+					<td><code>Preceding with blanks:       1977</code></td>
+				</tr>
+				<tr>
+					<td><code>printf("Preceding with zeros: %010d \n", 1977);</code></td>
+					<td><code>Preceding with zeros: 0000001977</code></td>
+				</tr>
+				<tr>
+					<td><code>printf("Some different radices: %d %x %o %#x %#o \n", 100, 100, 100, 100, 100);</code></td>
+					<td><code>Some different radices: 100 64 144 0x64 0144</code></td>
+				</tr>
+				<tr>
+					<td><code>printf("floats: %4.2f %+.0e %E \n", 3.1416, 3.1416, 3.1416);</code></td>
+					<td><code>floats: 3.14 +3e+000 3.141600E+000</code></td>
+				</tr>
+				<tr>
+					<td><code>printf("Width trick: %*d \n", 5, 10);</code></td>
+					<td><code>Width trick:    10</code></td>
+				</tr>
+				<tr>
+					<td><code>printf("%s \n", "A string");</code></td>
+					<td><code>A string</code></td>
+				</tr>
+			</tbody>
+		</table>
+		<br />
+		<table>
+			<thead>
+				<tr>
+					<th><em>flags</em></th>
+					<th>description</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td><code>-</code></td>
+					<td>Left-justify within the given field width; Right justification is the default (see <em>width</em> sub-specifier).</td>
+				</tr>
+				<tr>
+					<td><code>+</code></td>
+					<td>Forces to preceed the result with a plus or minus sign (<code>+</code> or <code>-</code>) even for positive numbers. By default, only negative numbers are preceded with a <code>-</code> sign.</td>
+				</tr>
+				<tr>
+					<td><em>(space)</em></td>
+					<td>If no sign is going to be written, a blank space is inserted before the value.</td>
+				</tr>
+				<tr>
+					<td><code>#</code></td>
+					<td>
+						Used with <code>o</code>, <code>x</code> or <code>X</code> specifiers the value is preceeded with <code>0</code>, <code>0x</code> or <code>0X</code> respectively for values different than zero.<br/>
+						Used with <code>a, A, e, E, f, F, g, G</code> it forces the written output to contain a decimal point even if no more digits follow. By default, if no digits follow, no decimal point is written.
+					</td>
+				</tr>
+				<tr>
+					<td><code>0</code></td>
+					<td>Left-pads the number with zeroes (<code>0</code>) instead of spaces when padding is specified (see <em>width</em> sub-specifier).</td>
+				</tr>
+			</tbody>
+		</table>
+		<br />
+		<table>
+			<thead>
+				<tr>
+					<th><em>width</em></th>
+					<th>description</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td><em>(number)</em></td>
+					<td>Minimum number of characters to be printed. If the value to be printed is shorter than this number, the result is padded with blank spaces. The value is not truncated even if the result is larger.</td>
+				</tr>
+				<tr>
+					<td><code>*</code></td>
+					<td>The <em>width</em> is not specified in the <em>format</em> string, but as an additional integer value argument preceding the argument that has to be formatted.</td>
+				</tr>
+			</tbody>
+		</table>
+		<br />
+		<table>
+			<thead>
+				<tr>
+					<th><em>.precision</em></th>
+					<th>description</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td><code>.</code><em>number</em></td>
+					<td>
+						For integer specifiers (<code>d, i, o, u, x, X</code>): <em>precision</em> specifies the minimum number of digits to be written.
+						If the value to be written is shorter than this number, the result is padded with leading zeros. The value is not truncated even if the result is longer.
+						A <em>precision</em> of <code>0</code> means that no character is written for the value <code>0</code>.<br/>
+						For <code>a, A, e, E, f, F</code> specifiers: this is the number of digits to be printed <strong>after</strong> the decimal point (by default, this is 6).<br/>
+						For <code>g</code> and <code>G</code> specifiers: This is the maximum number of significant digits to be printed.<br/>
+						For <code>s</code>: this is the maximum number of characters to be printed. By default all characters are printed until the ending null character is encountered.<br/>
+						If the period is specified without an explicit value for <em>precision</em>, <code>0</code> is assumed.</td>
+				</tr>
+				<tr>
+					<td><code>.*</code></td>
+					<td>The <em>precision</em> is not specified in the <em>format</em> string, but as an additional integer value argument preceding the argument that has to be formatted.</td>
+				</tr>
+			</tbody>
+		</table>
+	</section>
 	<br />
 	<hr />
-	<h1>ISO 8601 & Unicode</h1>
-	<p>Ref: <a target="_blank" rel="noreferrer" href="https://unicode-org.github.io/icu/userguide/format_parse/datetime/">ICU ref</a></p>
-	<table border="1" frame="box">
-		<thead>
-			<tr>
-				<th>Format Pattern</th>
-				<th>Result</th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr>
-				<td><code>"yyyy.MM.dd G 'at' HH:mm:ss zzz"</code></td>
-				<td><code>"1996.07.10 AD at 15:08:56 PDT"</code></td>
-			</tr>
-			<tr>
-				<td><code>"EEE, MMM d, ''yy"</code></td>
-				<td><code>"Wed, July 10, ‘96"</code></td>
-			</tr>
-			<tr>
-				<td><code>"h:mm a"</code></td>
-				<td><code>"12:08 PM"</code></td>
-			</tr>
-			<tr>
-				<td><code>"hh 'o''clock' a, zzzz"</code></td>
-				<td><code>"12 o’clock PM, Pacific Daylight Time"</code></td>
-			</tr>
-			<tr>
-				<td><code>"K:mm a, z"</code></td>
-				<td><code>"0:00 PM, PST"</code></td>
-			</tr>
-			<tr>
-				<td><code>"yyyyy.MMMM.dd GGG hh:mm aaa"</code></td>
-				<td><code>"01996.July.10 AD 12:08 PM"</code></td>
-			</tr>
-		</tbody>
-	</table>
+	<section>
+		<header><h1><code>strftime</code></h1></header>
+		<p>copied from: <a class="my-ref">https://cplusplus.com/reference/ctime/strftime/</a></p>
+		<table>
+			<thead>
+				<tr>
+					<th>Field type</th>
+					<th>specifier</th>
+					<th>Replaced by</th>
+					<th>Example</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td rowspan="5">year</td>
+					<td><code>%C</code></td>
+					<td>Year divided by 100 and truncated to integer (<code>00-99</code>)</td>
+					<td><code>20</code></td>
+				</tr>
+				<tr>
+					<td><code>%g</code></td>
+					<td>Week-based year, last two digits (<code>00-99</code>)</td>
+					<td><code>01</code></td>
+				</tr>
+				<tr>
+					<td><code>%G</code></td>
+					<td>Week-based year</td>
+					<td><code>2001</code></td>
+				</tr>
+				<tr>
+					<td><code>%y</code></td>
+					<td>Year, last two digits (<code>00-99</code>)</td>
+					<td><code>01</code></td>
+				</tr>
+				<tr>
+					<td><code>%Y</code></td>
+					<td>Year</td>
+					<td><code>2001</code></td>
+				</tr>
+				<tr>
+					<td rowspan="4">month</td>
+					<td><code>%b</code></td>
+					<td>Abbreviated month name</td>
+					<td><code>Aug</code></td>
+				</tr>
+				<tr>
+					<td><code>%B</code></td>
+					<td>Full month name *</td>
+					<td><code>August</code></td>
+				</tr>
+				<tr>
+					<td><code>%h</code></td>
+					<td>Abbreviated month name (same as <code>%b</code>)</td>
+					<td><code>Aug</code></td>
+				</tr>
+				<tr>
+					<td><code>%m</code></td>
+					<td>Month as a decimal number (<code>01-12</code>)</td>
+					<td><code>08</code></td>
+				</tr>
+				<tr>
+					<td rowspan="3">week</td>
+					<td><code>%U</code></td>
+					<td>Week number with the first Sunday as the first day of week one (<code>00-53</code>)</td>
+					<td><code>33</code></td>
+				</tr>
+				<tr>
+					<td><code>%V</code></td>
+					<td>ISO 8601 week number (<code>01-53</code>)</td>
+					<td><code>34</code></td>
+				</tr>
+				<tr>
+					<td><code>%W</code></td>
+					<td>Week number with the first Monday as the first day of week one (<code>00-53</code>)</td>
+					<td><code>34</code></td>
+				</tr>
+				<tr>
+					<td rowspan="7">day</td>
+					<td><code>%d</code></td>
+					<td>Day of the month, zero-padded (<code>01-31</code>)</td>
+					<td><code>23</code></td>
+				</tr>
+				<tr>
+					<td><code>%e</code></td>
+					<td>Day of the month, space-padded (<code> 1-31</code>)</td>
+					<td><code>23</code></td>
+				</tr>
+				<tr>
+					<td><code>%j</code></td>
+					<td>Day of the year (<code>001-366</code>)</td>
+					<td><code>235</code></td>
+				</tr>
+				<tr>
+					<td><code>%a</code></td>
+					<td>Abbreviated weekday name</td>
+					<td><code>Thu</code></td>
+				</tr>
+				<tr>
+					<td><code>%A</code></td>
+					<td>Full weekday name</td>
+					<td><code>Thursday</code></td>
+				</tr>
+				<tr>
+					<td><code>%u</code></td>
+					<td>ISO 8601 weekday as number with Monday as <code>1</code> (<code>1-7</code>)</td>
+					<td><code>4</code></td>
+				</tr>
+				<tr>
+					<td><code>%w</code></td>
+					<td>Weekday as a decimal number with Sunday as <code>0</code> (<code>0-6</code>)</td>
+					<td><code>4</code></td>
+				</tr>
+				<tr>
+					<td>period</td>
+					<td><code>%p</code></td>
+					<td>AM or PM designation</td>
+					<td><code>PM</code></td>
+				</tr>
+				<tr>
+					<td rowspan="4">hour</td>
+					<td><code>%H</code></td>
+					<td>Hour in 24h format (<code>00-23</code>)</td>
+					<td><code>14</code></td>
+				</tr>
+				<tr>
+					<td><code>%I</code></td>
+					<td>Hour in 12h format (<code>01-12</code>)</td>
+					<td><code>02</code></td>
+				</tr>
+				<tr>
+					<td><code>%r</code></td>
+					<td>12-hour clock time</td>
+					<td><code>02:55:02 pm</code></td>
+				</tr>
+				<tr>
+					<td><code>%R</code></td>
+					<td>24-hour <code>HH:MM</code> time, equivalent to <code>%H:%M</code></td>
+					<td><code>14:55</code></td>
+				</tr>
+				<tr>
+					<td>minute</td>
+					<td><code>%M</code></td>
+					<td>Minute (<code>00-59</code>)</td>
+					<td><code>55</code></td>
+				</tr>
+				<tr>
+					<td>second</td>
+					<td><code>%S</code></td>
+					<td>Second (<code>00-61</code>)</td>
+					<td><code>02</code></td>
+				</tr>
+				<tr>
+					<td rowspan="2">time zone</td>
+					<td><code>%z</code></td>
+					<td>ISO 8601 offset from UTC in timezone (1 minute=1, 1 hour=100)<br /> If timezone cannot be determined, no characters</td>
+					<td><code>+100</code></td>
+				</tr>
+				<tr>
+					<td><code>%Z</code></td>
+					<td>Timezone name or abbreviation<br /> If timezone cannot be determined, no characters</td>
+					<td><code>CDT</code></td>
+				</tr>
+				<tr>
+					<td rowspan="6">shortcut</td>
+					<td><code>%c</code></td>
+					<td>Date and time representation</td>
+					<td><code>Thu Aug 23 14:55:02 2001</code></td>
+				</tr>
+				<tr>
+					<td><code>%D</code></td>
+					<td>Short <code>MM/DD/YY</code> date, equivalent to <code>%m/%d/%y</code></td>
+					<td><code>08/23/01</code></td>
+				</tr>
+				<tr>
+					<td><code>%F</code></td>
+					<td>Short <code>YYYY-MM-DD</code> date, equivalent to <code>%Y-%m-%d</code></td>
+					<td><code>2001-08-23</code></td>
+				</tr>
+				<tr>
+					<td><code>%T</code></td>
+					<td>ISO 8601 time format (<code>HH:MM:SS</code>), equivalent to <code>%H:%M:%S</code></td>
+					<td><code>14:55:02</code></td>
+				</tr>
+				<tr>
+					<td><code>%x</code></td>
+					<td>Date representation</td>
+					<td><code>08/23/01</code></td>
+				</tr>
+				<tr>
+					<td><code>%X</code></td>
+					<td>Time representation</td>
+					<td><code>14:55:02</code></td>
+				</tr>
+				<tr>
+					<td rowspan="5">misc</td>
+					<td><code>%n</code></td>
+					<td>New-line character (<code>'\n'</code>)</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td><code>%t</code></td>
+					<td>Horizontal-tab character (<code>'\t'</code>)</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td><code>%%</code></td>
+					<td>A <code>%</code> sign</td>
+					<td><code>%</code></td>
+				</tr>
+				<tr>
+					<td><code>E</code></td>
+					<td>Uses the locale's alternative representation.<br />Applied to <code>%Ec %EC %Ex %EX %Ey %EY</code></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td><code>O</code></td>
+					<td>Uses the locale's alternative numeric symbols.<br />Applied to <code>%Od %Oe %OH %OI %Om %OM %OS %Ou %OU %OV %Ow %OW %Oy</code></td>
+					<td></td>
+				</tr>
+			</tbody>
+		</table>
+	</section>
 	<br />
-	<table border="1" frame="box">
-		<thead>
-			<tr>
-				<th>Field type</th>
-				<th>Symbol</th>
-				<th>Meaning</th>
-				<th>Pattern</th>
-				<th>Example Output</th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr>
-				<td>era</td>
-				<td><code>G</code></td>
-				<td>era designator</td>
-				<td><code>G</code>, <code>GG</code>, or <code>GGG</code><br /><code>GGGG</code><br /><code>GGGGG</code></td>
-				<td>AD<br />Anno Domini<br />A</td>
-			</tr>
-			<tr>
-				<td rowspan="5">year</td>
-				<td><code>y</code></td>
-				<td>year</td>
-				<td><code>yy</code><br /><code>y</code> or <code>yyyy</code></td>
-				<td>96<br />1996</td>
-			</tr>
-			<tr>
-				<td><code>Y</code></td>
-				<td>year of &ldquo;Week of Year&rdquo;</td>
-				<td><code>Y</code></td>
-				<td>1997</td>
-			</tr>
-			<tr>
-				<td><code>u</code></td>
-				<td>extended year</td>
-				<td><code>u</code></td>
-				<td>4601</td>
-			</tr>
-			<tr>
-				<td><code>U</code></td>
-				<td>cyclic year name, as in Chinese lunar calendar</td>
-				<td><code>U</code></td>
-				<td>甲子</td>
-			</tr>
-			<tr>
-				<td><code>r</code></td>
-				<td>related Gregorian year</td>
-				<td><code>r</code></td>
-				<td>1996</td>
-			</tr>
-			<tr>
-				<td rowspan="2">quarter</td>
-				<td><code>Q</code></td>
-				<td>quarter</td>
-				<td><code>Q</code><br /><code>QQ</code><br /><code>QQQ</code><br /><code>QQQQ</code><br /><code>QQQQQ</code></td>
-				<td>2<br />02<br />Q2<br />2nd quarter<br />2</td>
-			</tr>
-			<tr>
-				<td><code>q</code></td>
-				<td>stand-alone quarter</td>
-				<td><code>q</code><br /><code>qq</code><br /><code>qqq</code><br /><code>qqqq</code><br /><code>qqqqq</code></td>
-				<td>2<br />02<br />Q2<br />2nd quarter<br />2</td>
-			</tr>
-			<tr>
-				<td rowspan="2">month</td>
-				<td><code>M</code></td>
-				<td>month in year</td>
-				<td><code>M</code><br /><code>MM</code><br /><code>MMM</code><br /><code>MMMM</code><br /><code>MMMMM</code></td>
-				<td>9<br />09<br />Sep<br />September<br />S</td>
-			</tr>
-			<tr>
-				<td><code>L</code></td>
-				<td>stand-alone month in year</td>
-				<td><code>L</code><br /><code>LL</code><br /><code>LLL</code><br /><code>LLLL</code><br /><code>LLLLL</code></td>
-				<td>9<br />09<br />Sep<br />September<br />S</td>
-			</tr>
-			<tr>
-				<td rowspan="2">week</td>
-				<td><code>w</code></td>
-				<td>week of year</td>
-				<td><code>w</code><br /><code>ww</code></td>
-				<td>27<br />27</td>
-			</tr>
-			<tr>
-				<td><code>W</code></td>
-				<td>week of month</td>
-				<td><code>W</code></td>
-				<td>2</td>
-			</tr>
-			<tr>
-				<td rowspan="7">day</td>
-				<td><code>d</code></td>
-				<td>day in month</td>
-				<td><code>d</code><br /><code>dd</code></td>
-				<td>2<br />02</td>
-			</tr>
-			<tr>
-				<td><code>D</code></td>
-				<td>day of year</td>
-				<td><code>D</code></td>
-				<td>189</td>
-			</tr>
-			<tr>
-				<td><code>F</code></td>
-				<td>day of week in month</td>
-				<td><code>F</code></td>
-				<td>2 (2nd Wed in July)</td>
-			</tr>
-			<tr>
-				<td><code>g</code></td>
-				<td>modified julian day</td>
-				<td><code>g</code></td>
-				<td>2451334</td>
-			</tr>
-			<tr>
-				<td><code>E</code></td>
-				<td>day of week</td>
-				<td><code>E,</code> <code>EE</code>, or <code>EEE</code><br /><code>EEEE</code><br /><code>EEEEE</code><br /><code>EEEEEE</code></td>
-				<td>Tue<br />Tuesday<br />T<br />Tu</td>
-			</tr>
-			<tr>
-				<td><code>e</code></td>
-				<td>local day of week<br />example: if Monday is 1st day, Tuesday is 2nd )</td>
-				<td><code>e</code> or <code>ee</code><br /><code>eee</code><br /><code>eeee</code><br /><code>eeeee</code><br /><code>eeeeee</code></td>
-				<td>2<br />Tue<br />Tuesday<br />T<br />Tu</td>
-			</tr>
-			<tr>
-				<td><code>c</code></td>
-				<td>stand-alone local day of week</td>
-				<td><code>c</code> or <code>cc</code><br /><code>ccc</code><br /><code>cccc</code><br /><code>ccccc</code><br /><code>cccccc</code></td>
-				<td>2<br />Tue<br />Tuesday<br />T<br />Tu</td>
-			</tr>
-			<tr>
-				<td>period</td>
-				<td><code>a</code></td>
-				<td>am/pm marker</td>
-				<td><code>a</code></td>
-				<td>pm</td>
-			</tr>
-			<tr>
-				<td rowspan="4">hour</td>
-				<td><code>h</code></td>
-				<td>hour in am/pm (1~12)</td>
-				<td><code>h</code><br /><code>hh</code></td>
-				<td>7<br />07</td>
-			</tr>
-			<tr>
-				<td><code>H</code></td>
-				<td>hour in day (0~23)</td>
-				<td><code>H</code><br /><code>HH</code></td>
-				<td>0<br />00</td>
-			</tr>
-			<tr>
-				<td><code>k</code></td>
-				<td>hour in day (1~24)</td>
-				<td><code>k</code><br /><code>kk</code></td>
-				<td>24<br />24</td>
-			</tr>
-			<tr>
-				<td><code>K</code></td>
-				<td>hour in am/pm (0~11)</td>
-				<td><code>K</code><br /><code>KK</code></td>
-				<td>0<br />00</td>
-			</tr>
-			<tr>
-				<td>minute</td>
-				<td><code>m</code></td>
-				<td>minute in hour</td>
-				<td><code>m</code><br /><code>mm</code></td>
-				<td>4<br />04</td>
-			</tr>
-			<tr>
-				<td rowspan="3">second</td>
-				<td><code>s</code></td>
-				<td>second in minute</td>
-				<td><code>s</code><br /><code>ss</code></td>
-				<td>5<br />05</td>
-			</tr>
-			<tr>
-				<td><code>S</code></td>
-				<td>fractional second - truncates (like other time fields)<br />to the count of letters when formatting. Appends<br />zeros if more than 3 letters specified. Truncates at<br />three significant digits when parsing.</td>
-				<td><code>S</code><br /><code>SS</code><br /><code>SSS</code><br /><code>SSSS</code></td>
-				<td>2<br />23<br />235<br />2350</td>
-			</tr>
-			<tr>
-				<td><code>A</code></td>
-				<td>milliseconds in day</td>
-				<td><code>A</code></td>
-				<td>61201235</td>
-			</tr>
-			<tr>
-				<td rowspan="7">time zone</td>
-				<td><code>z</code></td>
-				<td>Time Zone: specific non-location</td>
-				<td><code>z</code>, <code>zz</code>, or <code>zzz</code><br /><code>zzzz</code></td>
-				<td>PDT<br />Pacific Daylight Time</td>
-			</tr>
-			<tr>
-				<td><code>Z</code></td>
-				<td>Time Zone: ISO8601 basic hms / RFC 822<br />Time Zone: long localized GMT (=OOOO)<br />TIme Zone: ISO8601 extended hms (=XXXXX)</td>
-				<td><code>Z</code>, <code>ZZ</code>, or <code>ZZZ</code><br /><code>ZZZZ</code><br /><code>ZZZZZ</code></td>
-				<td>-0800<br />GMT-08:00<br />-08:00, -07:52:58, Z</td>
-			</tr>
-			<tr>
-				<td><code>O</code></td>
-				<td>Time Zone: short localized GMT<br />Time Zone: long localized GMT (=ZZZZ)</td>
-				<td><code>O</code><br /><code>OOOO</code></td>
-				<td>GMT-8<br />GMT-08:00</td>
-			</tr>
-			<tr>
-				<td><code>v</code></td>
-				<td>Time Zone: generic non-location<br />(falls back first to VVVV)</td>
-				<td><code>v</code><br /><code>vvvv</code></td>
-				<td>PT<br />Pacific Time or Los Angeles Time</td>
-			</tr>
-			<tr>
-				<td><code>V</code></td>
-				<td>Time Zone: short time zone ID<br />Time Zone: long time zone ID<br />Time Zone: time zone exemplar city<br />Time Zone: generic location (falls back to OOOO)</td>
-				<td><code>V</code><br /><code>VV</code><br /><code>VVV</code><br /><code>VVVV</code></td>
-				<td>uslax<br />America/Los_Angeles<br />Los Angeles<br />Los Angeles Time</td>
-			</tr>
-			<tr>
-				<td><code>X</code></td>
-				<td>Time Zone: ISO8601 basic hm, with Z for 0<br />Time Zone: ISO8601 basic hm, with Z<br />Time Zone: ISO8601 extended hm, with Z<br />Time Zone: ISO8601 basic hms, with Z<br />Time Zone: ISO8601 extended hms, with Z</td>
-				<td><code>X</code><br /><code>XX</code><br /><code>XXX</code><br /><code>XXXX</code><br /><code>XXXXX</code></td>
-				<td>-08, +0530, Z<br />-0800, Z<br />-08:00, Z<br />-0800, -075258, Z<br />-08:00, -07:52:58, Z</td>
-			</tr>
-			<tr>
-				<td><code>x</code></td>
-				<td>Time Zone: ISO8601 basic hm, without Z for 0<br />Time Zone: ISO8601 basic hm, without Z<br />Time Zone: ISO8601 extended hm, without Z<br />Time Zone: ISO8601 basic hms, without Z<br />Time Zone: ISO8601 extended hms, without Z</td>
-				<td><code>x</code><br /><code>xx</code><br /><code>xxx</code><br /><code>xxxx</code><br /><code>xxxxx</code></td>
-				<td>-08, +0530<br />-0800<br />-08:00<br />-0800, -075258<br />-08:00, -07:52:58</td>
-			</tr>
-			<tr>
-				<td rowspan="2">misc</td>
-				<td><code>'</code></td>
-				<td>escape for text</td>
-				<td><code>'</code></td>
-				<td>(nothing)</td>
-			</tr>
-			<tr>
-				<td><code>' '</code></td>
-				<td>two single quotes produce one</td>
-				<td><code>' '</code></td>
-				<td>&rsquo;</td>
-			</tr>
-		</tbody>
-	</table>
+	<hr />
+	<section>
+		<header><h1>ISO 8601 & Unicode</h1></header>
+		<p>copied from: <a class="my-ref">https://unicode-org.github.io/icu/userguide/format_parse/datetime/</a></p>
+		<table>
+			<thead>
+				<tr>
+					<th>Format Pattern</th>
+					<th>Result</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td><code>"yyyy.MM.dd G 'at' HH:mm:ss zzz"</code></td>
+					<td><code>"1996.07.10 AD at 15:08:56 PDT"</code></td>
+				</tr>
+				<tr>
+					<td><code>"EEE, MMM d, ''yy"</code></td>
+					<td><code>"Wed, July 10, ‘96"</code></td>
+				</tr>
+				<tr>
+					<td><code>"h:mm a"</code></td>
+					<td><code>"12:08 PM"</code></td>
+				</tr>
+				<tr>
+					<td><code>"hh 'o''clock' a, zzzz"</code></td>
+					<td><code>"12 o’clock PM, Pacific Daylight Time"</code></td>
+				</tr>
+				<tr>
+					<td><code>"K:mm a, z"</code></td>
+					<td><code>"0:00 PM, PST"</code></td>
+				</tr>
+				<tr>
+					<td><code>"yyyyy.MMMM.dd GGG hh:mm aaa"</code></td>
+					<td><code>"01996.July.10 AD 12:08 PM"</code></td>
+				</tr>
+			</tbody>
+		</table>
+		<br />
+		<table>
+			<thead>
+				<tr>
+					<th>Field type</th>
+					<th>Symbol</th>
+					<th>Meaning</th>
+					<th>Pattern</th>
+					<th>Example Output</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>era</td>
+					<td><code>G</code></td>
+					<td>era designator</td>
+					<td><code>G</code>, <code>GG</code>, or <code>GGG</code><br /><code>GGGG</code><br /><code>GGGGG</code></td>
+					<td>AD<br />Anno Domini<br />A</td>
+				</tr>
+				<tr>
+					<td rowspan="5">year</td>
+					<td><code>y</code></td>
+					<td>year</td>
+					<td><code>yy</code><br /><code>y</code> or <code>yyyy</code></td>
+					<td>96<br />1996</td>
+				</tr>
+				<tr>
+					<td><code>Y</code></td>
+					<td>year of &ldquo;Week of Year&rdquo;</td>
+					<td><code>Y</code></td>
+					<td>1997</td>
+				</tr>
+				<tr>
+					<td><code>u</code></td>
+					<td>extended year</td>
+					<td><code>u</code></td>
+					<td>4601</td>
+				</tr>
+				<tr>
+					<td><code>U</code></td>
+					<td>cyclic year name, as in Chinese lunar calendar</td>
+					<td><code>U</code></td>
+					<td>甲子</td>
+				</tr>
+				<tr>
+					<td><code>r</code></td>
+					<td>related Gregorian year</td>
+					<td><code>r</code></td>
+					<td>1996</td>
+				</tr>
+				<tr>
+					<td rowspan="2">quarter</td>
+					<td><code>Q</code></td>
+					<td>quarter</td>
+					<td><code>Q</code><br /><code>QQ</code><br /><code>QQQ</code><br /><code>QQQQ</code><br /><code>QQQQQ</code></td>
+					<td>2<br />02<br />Q2<br />2nd quarter<br />2</td>
+				</tr>
+				<tr>
+					<td><code>q</code></td>
+					<td>stand-alone quarter</td>
+					<td><code>q</code><br /><code>qq</code><br /><code>qqq</code><br /><code>qqqq</code><br /><code>qqqqq</code></td>
+					<td>2<br />02<br />Q2<br />2nd quarter<br />2</td>
+				</tr>
+				<tr>
+					<td rowspan="2">month</td>
+					<td><code>M</code></td>
+					<td>month in year</td>
+					<td><code>M</code><br /><code>MM</code><br /><code>MMM</code><br /><code>MMMM</code><br /><code>MMMMM</code></td>
+					<td>9<br />09<br />Sep<br />September<br />S</td>
+				</tr>
+				<tr>
+					<td><code>L</code></td>
+					<td>stand-alone month in year</td>
+					<td><code>L</code><br /><code>LL</code><br /><code>LLL</code><br /><code>LLLL</code><br /><code>LLLLL</code></td>
+					<td>9<br />09<br />Sep<br />September<br />S</td>
+				</tr>
+				<tr>
+					<td rowspan="2">week</td>
+					<td><code>w</code></td>
+					<td>week of year</td>
+					<td><code>w</code><br /><code>ww</code></td>
+					<td>27<br />27</td>
+				</tr>
+				<tr>
+					<td><code>W</code></td>
+					<td>week of month</td>
+					<td><code>W</code></td>
+					<td>2</td>
+				</tr>
+				<tr>
+					<td rowspan="7">day</td>
+					<td><code>d</code></td>
+					<td>day in month</td>
+					<td><code>d</code><br /><code>dd</code></td>
+					<td>2<br />02</td>
+				</tr>
+				<tr>
+					<td><code>D</code></td>
+					<td>day of year</td>
+					<td><code>D</code></td>
+					<td>189</td>
+				</tr>
+				<tr>
+					<td><code>F</code></td>
+					<td>day of week in month</td>
+					<td><code>F</code></td>
+					<td>2 (2nd Wed in July)</td>
+				</tr>
+				<tr>
+					<td><code>g</code></td>
+					<td>modified julian day</td>
+					<td><code>g</code></td>
+					<td>2451334</td>
+				</tr>
+				<tr>
+					<td><code>E</code></td>
+					<td>day of week</td>
+					<td><code>E,</code> <code>EE</code>, or <code>EEE</code><br /><code>EEEE</code><br /><code>EEEEE</code><br /><code>EEEEEE</code></td>
+					<td>Tue<br />Tuesday<br />T<br />Tu</td>
+				</tr>
+				<tr>
+					<td><code>e</code></td>
+					<td>local day of week<br />example: if Monday is 1st day, Tuesday is 2nd )</td>
+					<td><code>e</code> or <code>ee</code><br /><code>eee</code><br /><code>eeee</code><br /><code>eeeee</code><br /><code>eeeeee</code></td>
+					<td>2<br />Tue<br />Tuesday<br />T<br />Tu</td>
+				</tr>
+				<tr>
+					<td><code>c</code></td>
+					<td>stand-alone local day of week</td>
+					<td><code>c</code> or <code>cc</code><br /><code>ccc</code><br /><code>cccc</code><br /><code>ccccc</code><br /><code>cccccc</code></td>
+					<td>2<br />Tue<br />Tuesday<br />T<br />Tu</td>
+				</tr>
+				<tr>
+					<td>period</td>
+					<td><code>a</code></td>
+					<td>am/pm marker</td>
+					<td><code>a</code></td>
+					<td>pm</td>
+				</tr>
+				<tr>
+					<td rowspan="4">hour</td>
+					<td><code>h</code></td>
+					<td>hour in am/pm (1~12)</td>
+					<td><code>h</code><br /><code>hh</code></td>
+					<td>7<br />07</td>
+				</tr>
+				<tr>
+					<td><code>H</code></td>
+					<td>hour in day (0~23)</td>
+					<td><code>H</code><br /><code>HH</code></td>
+					<td>0<br />00</td>
+				</tr>
+				<tr>
+					<td><code>k</code></td>
+					<td>hour in day (1~24)</td>
+					<td><code>k</code><br /><code>kk</code></td>
+					<td>24<br />24</td>
+				</tr>
+				<tr>
+					<td><code>K</code></td>
+					<td>hour in am/pm (0~11)</td>
+					<td><code>K</code><br /><code>KK</code></td>
+					<td>0<br />00</td>
+				</tr>
+				<tr>
+					<td>minute</td>
+					<td><code>m</code></td>
+					<td>minute in hour</td>
+					<td><code>m</code><br /><code>mm</code></td>
+					<td>4<br />04</td>
+				</tr>
+				<tr>
+					<td rowspan="3">second</td>
+					<td><code>s</code></td>
+					<td>second in minute</td>
+					<td><code>s</code><br /><code>ss</code></td>
+					<td>5<br />05</td>
+				</tr>
+				<tr>
+					<td><code>S</code></td>
+					<td>fractional second - truncates (like other time fields)<br />to the count of letters when formatting. Appends<br />zeros if more than 3 letters specified. Truncates at<br />three significant digits when parsing.</td>
+					<td><code>S</code><br /><code>SS</code><br /><code>SSS</code><br /><code>SSSS</code></td>
+					<td>2<br />23<br />235<br />2350</td>
+				</tr>
+				<tr>
+					<td><code>A</code></td>
+					<td>milliseconds in day</td>
+					<td><code>A</code></td>
+					<td>61201235</td>
+				</tr>
+				<tr>
+					<td rowspan="7">time zone</td>
+					<td><code>z</code></td>
+					<td>Time Zone: specific non-location</td>
+					<td><code>z</code>, <code>zz</code>, or <code>zzz</code><br /><code>zzzz</code></td>
+					<td>PDT<br />Pacific Daylight Time</td>
+				</tr>
+				<tr>
+					<td><code>Z</code></td>
+					<td>Time Zone: ISO8601 basic hms / RFC 822<br />Time Zone: long localized GMT (=OOOO)<br />TIme Zone: ISO8601 extended hms (=XXXXX)</td>
+					<td><code>Z</code>, <code>ZZ</code>, or <code>ZZZ</code><br /><code>ZZZZ</code><br /><code>ZZZZZ</code></td>
+					<td>-0800<br />GMT-08:00<br />-08:00, -07:52:58, Z</td>
+				</tr>
+				<tr>
+					<td><code>O</code></td>
+					<td>Time Zone: short localized GMT<br />Time Zone: long localized GMT (=ZZZZ)</td>
+					<td><code>O</code><br /><code>OOOO</code></td>
+					<td>GMT-8<br />GMT-08:00</td>
+				</tr>
+				<tr>
+					<td><code>v</code></td>
+					<td>Time Zone: generic non-location<br />(falls back first to VVVV)</td>
+					<td><code>v</code><br /><code>vvvv</code></td>
+					<td>PT<br />Pacific Time or Los Angeles Time</td>
+				</tr>
+				<tr>
+					<td><code>V</code></td>
+					<td>Time Zone: short time zone ID<br />Time Zone: long time zone ID<br />Time Zone: time zone exemplar city<br />Time Zone: generic location (falls back to OOOO)</td>
+					<td><code>V</code><br /><code>VV</code><br /><code>VVV</code><br /><code>VVVV</code></td>
+					<td>uslax<br />America/Los_Angeles<br />Los Angeles<br />Los Angeles Time</td>
+				</tr>
+				<tr>
+					<td><code>X</code></td>
+					<td>Time Zone: ISO8601 basic hm, with Z for 0<br />Time Zone: ISO8601 basic hm, with Z<br />Time Zone: ISO8601 extended hm, with Z<br />Time Zone: ISO8601 basic hms, with Z<br />Time Zone: ISO8601 extended hms, with Z</td>
+					<td><code>X</code><br /><code>XX</code><br /><code>XXX</code><br /><code>XXXX</code><br /><code>XXXXX</code></td>
+					<td>-08, +0530, Z<br />-0800, Z<br />-08:00, Z<br />-0800, -075258, Z<br />-08:00, -07:52:58, Z</td>
+				</tr>
+				<tr>
+					<td><code>x</code></td>
+					<td>Time Zone: ISO8601 basic hm, without Z for 0<br />Time Zone: ISO8601 basic hm, without Z<br />Time Zone: ISO8601 extended hm, without Z<br />Time Zone: ISO8601 basic hms, without Z<br />Time Zone: ISO8601 extended hms, without Z</td>
+					<td><code>x</code><br /><code>xx</code><br /><code>xxx</code><br /><code>xxxx</code><br /><code>xxxxx</code></td>
+					<td>-08, +0530<br />-0800<br />-08:00<br />-0800, -075258<br />-08:00, -07:52:58</td>
+				</tr>
+				<tr>
+					<td rowspan="2">misc</td>
+					<td><code>'</code></td>
+					<td>escape for text</td>
+					<td><code>'</code></td>
+					<td>(nothing)</td>
+				</tr>
+				<tr>
+					<td><code>' '</code></td>
+					<td>two single quotes produce one</td>
+					<td><code>' '</code></td>
+					<td>&rsquo;</td>
+				</tr>
+			</tbody>
+		</table>
+	</section>
 </body>
